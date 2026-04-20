@@ -44,7 +44,9 @@
     "noDataYet": "Aún no hay respuestas.",
     "global": "Global",
     "world": "Mundo",
-    "noData": "Sin datos"
+    "noData": "Sin datos",
+    "liveOn": "En vivo",
+    "liveOff": "Pausado"
   },
   "countdown": {
     "nextQuestionIn": "Próxima pregunta en {time}"

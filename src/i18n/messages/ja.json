@@ -44,7 +44,9 @@
     "noDataYet": "まだ回答がありません。",
     "global": "全体",
     "world": "世界",
-    "noData": "データなし"
+    "noData": "データなし",
+    "liveOn": "ライブ",
+    "liveOff": "一時停止"
   },
   "countdown": {
     "nextQuestionIn": "次の質問まで {time}"

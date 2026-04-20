@@ -1,6 +1,8 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import type { ReactNode } from "react";
 
 import { Badge } from "@/components/ui/Badge";
 import type { OptionAggregate } from "@/lib/db/queries/results";
@@ -15,6 +17,8 @@ interface GlobalBarChartProps {
   myOptionId: string | null;
   /** 참여자 수 */
   totalCount: number;
+  /** 오른쪽 상단 LIVE 인디케이터 슬롯. */
+  liveBadge?: ReactNode;
 }
 
 const LETTERS = ["A", "B", "C", "D", "E"];
@@ -24,6 +28,7 @@ export function GlobalBarChart({
   optionLabel,
   myOptionId,
   totalCount,
+  liveBadge,
 }: GlobalBarChartProps) {
   const t = useTranslations();
 
@@ -41,13 +46,22 @@ export function GlobalBarChart({
       aria-label="Global results"
       className="flex w-full flex-col gap-4 rounded-3xl bg-white p-5 shadow-soft dark:bg-neutral-900 sm:p-6"
     >
-      <header className="flex items-end justify-between">
-        <h2 className="font-display text-base font-semibold">{t("results.global")}</h2>
+      <header className="flex items-end justify-between gap-3">
+        <div className="flex flex-col items-start gap-1">
+          <h2 className="font-display text-base font-semibold">{t("results.global")}</h2>
+          {liveBadge}
+        </div>
         <div className="text-right">
-          <div className="font-display text-2xl font-semibold text-brand-600 tabular-nums">
+          <motion.div
+            key={totalCount}
+            initial={{ scale: 1.15, color: "#ea580c" }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="font-display text-2xl font-semibold text-brand-600 tabular-nums"
+          >
             {totalCount.toLocaleString()}
-          </div>
-          <div className="text-xs text-neutral-500">
+          </motion.div>
+          <div className="text-xs text-neutral-500 dark:text-neutral-400">
             {t("results.totalParticipants", { count: totalCount })}
           </div>
         </div>

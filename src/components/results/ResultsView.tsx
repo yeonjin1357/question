@@ -7,8 +7,10 @@ import { useEffect } from "react";
 
 import { GlobalBarChart } from "@/components/results/GlobalBarChart";
 import { CountdownBanner } from "@/components/shared/CountdownBanner";
+import { LiveDot } from "@/components/shared/LiveDot";
 import { ShareButton } from "@/components/shared/ShareButton";
 import { StreakChip } from "@/components/shared/StreakChip";
+import { useLiveResults } from "@/hooks/useLiveResults";
 import type { AggregateResult } from "@/lib/db/queries/results";
 
 const WorldMap = dynamic(
@@ -40,7 +42,7 @@ interface ResultsViewProps {
 }
 
 export function ResultsView({
-  results,
+  results: initialResults,
   options,
   myOptionId,
   questionId,
@@ -49,6 +51,7 @@ export function ResultsView({
   celebrate = false,
 }: ResultsViewProps) {
   const t = useTranslations();
+  const { results, isLive } = useLiveResults(questionId, initialResults);
 
   useEffect(() => {
     if (!celebrate) return;
@@ -105,6 +108,7 @@ export function ResultsView({
         optionLabel={optionLabel}
         myOptionId={myOptionId}
         totalCount={total}
+        liveBadge={<LiveDot active={isLive} />}
       />
 
       <WorldMap byCountry={results.byCountry} optionOrder={sortedOptions} />

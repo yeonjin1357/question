@@ -44,7 +44,9 @@
     "noDataYet": "아직 응답이 없어요.",
     "global": "전체",
     "world": "세계",
-    "noData": "데이터 없음"
+    "noData": "데이터 없음",
+    "liveOn": "실시간",
+    "liveOff": "일시중지"
   },
   "countdown": {
     "nextQuestionIn": "다음 질문까지 {time}"

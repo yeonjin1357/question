@@ -44,7 +44,9 @@
     "noDataYet": "No responses yet.",
     "global": "Global",
     "world": "World",
-    "noData": "No data"
+    "noData": "No data",
+    "liveOn": "Live",
+    "liveOff": "Paused"
   },
   "countdown": {
     "nextQuestionIn": "Next question in {time}"
