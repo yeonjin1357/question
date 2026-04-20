@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "One Question a Day",
+    "tagline": "One question. One day. The world answers."
+  },
+  "question": {
+    "noQuestionToday": "No question today — please check back soon.",
+    "translationFallback": "Translation not available in your language. Showing English."
+  },
+  "cta": {
+    "answer": "Answer",
+    "share": "Share",
+    "shareCopied": "✓ Copied!",
+    "viewResults": "View results",
+    "loadMore": "Load more",
+    "backToArchive": "← Archive",
+    "backToHome": "← Home"
+  },
+  "results": {
+    "totalParticipants": "{count, plural, one {# response} other {# responses}}",
+    "yourAnswer": "Your answer: {text}",
+    "loading": "Loading results…",
+    "noDataYet": "No responses yet.",
+    "global": "Global",
+    "world": "World",
+    "noData": "No data"
+  },
+  "countdown": {
+    "nextQuestionIn": "Next question in {time}"
+  },
+  "archive": {
+    "title": "Archive",
+    "all": "All",
+    "noItems": "No questions in this view yet.",
+    "topCountryPrefix": "top: {country}"
+  },
+  "suggest": {
+    "title": "Suggest a question",
+    "description": "Got a good question? Send it our way.",
+    "questionLabel": "Question (10–200 characters)",
+    "optionLabel": "Option {n}",
+    "addOption": "+ Add option",
+    "removeOption": "Remove",
+    "emailLabel": "Email (optional, for approval notification)",
+    "submit": "Submit",
+    "submitting": "Submitting…",
+    "success": "Thanks! We'll review it.",
+    "errorSpam": "That doesn't look like a question we can use."
+  },
+  "a11y": {
+    "skipToMain": "Skip to main content"
+  },
+  "legal": {
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "privacyTitle": "Privacy Policy",
+    "termsTitle": "Terms of Use",
+    "lastUpdated": "Last updated: {date}",
+    "cookieNoticeBody": "This site uses only strictly necessary cookies to remember your daily answer. No tracking cookies.",
+    "cookieNoticeAck": "Got it"
+  },
+  "suggest_form": {
+    "optionsLegend": "Options"
+  },
+  "error": {
+    "generic": "Something went wrong. Please try again.",
+    "alreadyAnswered": "You already answered today's question.",
+    "pageTitle": "Something went wrong",
+    "pageBody": "We hit an unexpected error. You can retry below.",
+    "retry": "Try again",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you're looking for doesn't exist or has moved.",
+    "loading": "Loading…"
+  }
+}

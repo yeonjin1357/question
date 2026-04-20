@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+build
+coverage
+*.log
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+public/world-atlas
+supabase/migrations
+
+# 문서는 사람이 직접 관리
+CLAUDE.md
+README.md
+docs/

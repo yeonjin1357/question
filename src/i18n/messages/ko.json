@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "하루 한 질문",
+    "tagline": "하루에 하나의 질문. 전 세계가 답합니다."
+  },
+  "question": {
+    "noQuestionToday": "오늘의 질문이 아직 준비되지 않았어요. 잠시 후 다시 확인해 주세요.",
+    "translationFallback": "이 언어 번역이 없어 영어로 표시합니다."
+  },
+  "cta": {
+    "answer": "답하기",
+    "share": "공유",
+    "shareCopied": "✓ 복사됨",
+    "viewResults": "결과 보기",
+    "loadMore": "더 보기",
+    "backToArchive": "← 아카이브",
+    "backToHome": "← 홈"
+  },
+  "results": {
+    "totalParticipants": "{count}명 참여",
+    "yourAnswer": "당신의 답: {text}",
+    "loading": "결과 불러오는 중…",
+    "noDataYet": "아직 응답이 없어요.",
+    "global": "전체",
+    "world": "세계",
+    "noData": "데이터 없음"
+  },
+  "countdown": {
+    "nextQuestionIn": "다음 질문까지 {time}"
+  },
+  "archive": {
+    "title": "아카이브",
+    "all": "전체",
+    "noItems": "아직 이 조건에 해당하는 질문이 없어요.",
+    "topCountryPrefix": "최다: {country}"
+  },
+  "suggest": {
+    "title": "질문 제안",
+    "description": "좋은 질문이 떠올랐다면 보내 주세요.",
+    "questionLabel": "질문 (10–200자)",
+    "optionLabel": "옵션 {n}",
+    "addOption": "+ 옵션 추가",
+    "removeOption": "삭제",
+    "emailLabel": "이메일 (선택, 승인 알림용)",
+    "submit": "제출",
+    "submitting": "제출 중…",
+    "success": "고마워요! 검토 후 반영할게요.",
+    "errorSpam": "저희가 다루기에 적절하지 않은 것 같아요."
+  },
+  "a11y": {
+    "skipToMain": "본문으로 건너뛰기"
+  },
+  "legal": {
+    "privacy": "개인정보",
+    "terms": "이용약관",
+    "privacyTitle": "개인정보 처리방침",
+    "termsTitle": "이용약관",
+    "lastUpdated": "최종 업데이트: {date}",
+    "cookieNoticeBody": "이 사이트는 하루의 답을 기억하기 위해 꼭 필요한 쿠키만 사용합니다. 추적 쿠키는 없어요.",
+    "cookieNoticeAck": "확인"
+  },
+  "suggest_form": {
+    "optionsLegend": "선택지"
+  },
+  "error": {
+    "generic": "문제가 발생했어요. 다시 시도해 주세요.",
+    "alreadyAnswered": "오늘의 질문엔 이미 답하셨어요.",
+    "pageTitle": "문제가 발생했어요",
+    "pageBody": "예상치 못한 오류가 있었어요. 아래에서 다시 시도할 수 있어요.",
+    "retry": "다시 시도",
+    "notFoundTitle": "페이지를 찾을 수 없어요",
+    "notFoundBody": "찾으시는 페이지가 없거나 이동됐어요.",
+    "loading": "불러오는 중…"
+  }
+}

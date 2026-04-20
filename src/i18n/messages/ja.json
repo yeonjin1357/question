@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "一日一問",
+    "tagline": "一つの質問、一日、世界が答える。"
+  },
+  "question": {
+    "noQuestionToday": "今日の質問はまだ準備できていません。後ほどご確認ください。",
+    "translationFallback": "お使いの言語の翻訳がありません。英語で表示します。"
+  },
+  "cta": {
+    "answer": "答える",
+    "share": "シェア",
+    "shareCopied": "✓ コピー済み",
+    "viewResults": "結果を見る",
+    "loadMore": "もっと見る",
+    "backToArchive": "← アーカイブ",
+    "backToHome": "← ホーム"
+  },
+  "results": {
+    "totalParticipants": "{count}人が参加",
+    "yourAnswer": "あなたの答え: {text}",
+    "loading": "結果を読み込み中…",
+    "noDataYet": "まだ回答がありません。",
+    "global": "全体",
+    "world": "世界",
+    "noData": "データなし"
+  },
+  "countdown": {
+    "nextQuestionIn": "次の質問まで {time}"
+  },
+  "archive": {
+    "title": "アーカイブ",
+    "all": "すべて",
+    "noItems": "この条件の質問はまだありません。",
+    "topCountryPrefix": "最多: {country}"
+  },
+  "suggest": {
+    "title": "質問を提案",
+    "description": "良い質問が思いついたらお送りください。",
+    "questionLabel": "質問 (10–200文字)",
+    "optionLabel": "選択肢 {n}",
+    "addOption": "+ 選択肢を追加",
+    "removeOption": "削除",
+    "emailLabel": "メール (任意、承認通知用)",
+    "submit": "送信",
+    "submitting": "送信中…",
+    "success": "ありがとうございます！確認します。",
+    "errorSpam": "この内容は掲載できません。"
+  },
+  "a11y": {
+    "skipToMain": "本文へスキップ"
+  },
+  "legal": {
+    "privacy": "プライバシー",
+    "terms": "利用規約",
+    "privacyTitle": "プライバシーポリシー",
+    "termsTitle": "利用規約",
+    "lastUpdated": "最終更新: {date}",
+    "cookieNoticeBody": "このサイトは今日の回答を記憶するために必要最低限のクッキーのみ使用します。追跡クッキーはありません。",
+    "cookieNoticeAck": "了解"
+  },
+  "suggest_form": {
+    "optionsLegend": "選択肢"
+  },
+  "error": {
+    "generic": "問題が発生しました。もう一度お試しください。",
+    "alreadyAnswered": "今日の質問にはすでに回答済みです。",
+    "pageTitle": "問題が発生しました",
+    "pageBody": "予期しないエラーが発生しました。下のボタンからやり直せます。",
+    "retry": "やり直す",
+    "notFoundTitle": "ページが見つかりません",
+    "notFoundBody": "お探しのページは存在しないか、移動しました。",
+    "loading": "読み込み中…"
+  }
+}

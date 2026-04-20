@@ -1,0 +1,75 @@
+{
+  "app": {
+    "title": "Una pregunta al día",
+    "tagline": "Una pregunta. Un día. El mundo responde."
+  },
+  "question": {
+    "noQuestionToday": "Aún no hay pregunta para hoy. Vuelve en un rato.",
+    "translationFallback": "No hay traducción en tu idioma. Mostrando en inglés."
+  },
+  "cta": {
+    "answer": "Responder",
+    "share": "Compartir",
+    "shareCopied": "✓ Copiado",
+    "viewResults": "Ver resultados",
+    "loadMore": "Ver más",
+    "backToArchive": "← Archivo",
+    "backToHome": "← Inicio"
+  },
+  "results": {
+    "totalParticipants": "{count, plural, one {# respuesta} other {# respuestas}}",
+    "yourAnswer": "Tu respuesta: {text}",
+    "loading": "Cargando resultados…",
+    "noDataYet": "Aún no hay respuestas.",
+    "global": "Global",
+    "world": "Mundo",
+    "noData": "Sin datos"
+  },
+  "countdown": {
+    "nextQuestionIn": "Próxima pregunta en {time}"
+  },
+  "archive": {
+    "title": "Archivo",
+    "all": "Todas",
+    "noItems": "Aún no hay preguntas en esta vista.",
+    "topCountryPrefix": "top: {country}"
+  },
+  "suggest": {
+    "title": "Sugerir una pregunta",
+    "description": "¿Tienes una buena pregunta? Envíanosla.",
+    "questionLabel": "Pregunta (10–200 caracteres)",
+    "optionLabel": "Opción {n}",
+    "addOption": "+ Agregar opción",
+    "removeOption": "Quitar",
+    "emailLabel": "Correo (opcional, para aviso de aprobación)",
+    "submit": "Enviar",
+    "submitting": "Enviando…",
+    "success": "¡Gracias! La revisaremos.",
+    "errorSpam": "No parece una pregunta que podamos usar."
+  },
+  "a11y": {
+    "skipToMain": "Saltar al contenido principal"
+  },
+  "legal": {
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "privacyTitle": "Política de Privacidad",
+    "termsTitle": "Términos de Uso",
+    "lastUpdated": "Última actualización: {date}",
+    "cookieNoticeBody": "Este sitio solo usa cookies estrictamente necesarias para recordar tu respuesta del día. No usamos cookies de seguimiento.",
+    "cookieNoticeAck": "Entendido"
+  },
+  "suggest_form": {
+    "optionsLegend": "Opciones"
+  },
+  "error": {
+    "generic": "Algo salió mal. Inténtalo de nuevo.",
+    "alreadyAnswered": "Ya respondiste la pregunta de hoy.",
+    "pageTitle": "Algo salió mal",
+    "pageBody": "Se produjo un error inesperado. Puedes volver a intentarlo abajo.",
+    "retry": "Reintentar",
+    "notFoundTitle": "Página no encontrada",
+    "notFoundBody": "La página que buscas no existe o ha sido movida.",
+    "loading": "Cargando…"
+  }
+}
