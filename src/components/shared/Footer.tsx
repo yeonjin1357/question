@@ -15,6 +15,15 @@ export async function Footer({ locale }: { locale: string }) {
         ·
       </span>
       <Link
+        href={`/${locale}/history`}
+        className="rounded-full px-2 py-1 hover:text-brand-600 dark:hover:text-brand-400"
+      >
+        {t("history.navLabel")}
+      </Link>
+      <span aria-hidden className="text-neutral-300 dark:text-neutral-700">
+        ·
+      </span>
+      <Link
         href={`/${locale}/suggest`}
         className="rounded-full px-2 py-1 hover:text-brand-600 dark:hover:text-brand-400 sm:hidden"
       >

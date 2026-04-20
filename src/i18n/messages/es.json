@@ -6,6 +6,14 @@
   "home": {
     "todaysQuestion": "La pregunta de hoy"
   },
+  "history": {
+    "title": "Mis respuestas",
+    "subtitle": "Las preguntas que has respondido.",
+    "privacyNote": "Basado en el hash de sesión de hoy — no guardamos un ID de usuario entre días. Tu historial se reinicia cuando cambia el salt diario (UTC 00:00).",
+    "empty": "Aún no has respondido hoy.",
+    "youAnswered": "Elegiste: {text}",
+    "navLabel": "Mis respuestas"
+  },
   "about": {
     "title": "Una pregunta al día",
     "subtitle": "Una pregunta. Un día. El mundo responde.",
@@ -55,7 +63,8 @@
     "zoomIn": "Acercar",
     "zoomOut": "Alejar",
     "reset": "Restablecer",
-    "hint": "Arrastra para mover · desplaza para acercar"
+    "hint": "Arrastra · desplaza · haz clic en un país",
+    "close": "Cerrar"
   },
   "streak": {
     "daysInARow": "{count} días seguidos",

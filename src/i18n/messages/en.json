@@ -6,6 +6,14 @@
   "home": {
     "todaysQuestion": "Today's question"
   },
+  "history": {
+    "title": "My answers",
+    "subtitle": "The questions you've answered.",
+    "privacyNote": "Based on today's session hash — we don't store a user ID across days. Your history resets when the daily salt rotates (UTC 00:00).",
+    "empty": "You haven't answered yet today.",
+    "youAnswered": "You picked: {text}",
+    "navLabel": "My answers"
+  },
   "about": {
     "title": "One Question a Day",
     "subtitle": "One question. One day. The whole world answers.",
@@ -55,7 +63,8 @@
     "zoomIn": "Zoom in",
     "zoomOut": "Zoom out",
     "reset": "Reset view",
-    "hint": "Drag to pan · scroll to zoom"
+    "hint": "Drag to pan · scroll to zoom · click a country",
+    "close": "Close details"
   },
   "streak": {
     "daysInARow": "{count}-day streak",

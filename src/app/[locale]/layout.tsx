@@ -60,6 +60,11 @@ export const metadata: Metadata = {
     title: "OneQ",
     statusBarStyle: "default",
   },
+  alternates: {
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
+  },
 };
 
 export const viewport = {

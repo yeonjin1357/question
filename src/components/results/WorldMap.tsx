@@ -1,12 +1,14 @@
 "use client";
 
-import { Minus, Plus, RotateCcw } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Minus, Plus, RotateCcw, X } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from "react-simple-maps";
 
 import type { CountryAggregate } from "@/lib/db/queries/results";
 import { alpha2FromNumeric } from "@/lib/geo/iso3166";
+import { optionEmoji } from "@/lib/ui/option-emoji";
 import { cn } from "@/lib/utils/cn";
 
 const GEO_URL = "/world-atlas/countries-110m.json";
@@ -32,11 +34,18 @@ interface TooltipState {
   y: number;
 }
 
+interface SelectedCountry {
+  alpha2: string;
+  name: string;
+  agg: CountryAggregate;
+}
+
 export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
   const t = useTranslations();
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const [zoom, setZoom] = useState(1);
   const [center, setCenter] = useState<[number, number]>(DEFAULT_CENTER);
+  const [selected, setSelected] = useState<SelectedCountry | null>(null);
 
   const optionIndex = useMemo(
     () => Object.fromEntries(optionOrder.map((o, i) => [o.id, i])),
@@ -52,6 +61,28 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
     for (const c of byCountry) m.set(c.country, c);
     return m;
   }, [byCountry]);
+
+  // byCountry 갱신 (라이브 폴링) 시 선택된 국가의 agg 도 최신으로 교체.
+  useEffect(() => {
+    if (!selected) return;
+    const fresh = byAlpha2.get(selected.alpha2);
+    if (fresh && fresh !== selected.agg) {
+      setSelected({ ...selected, agg: fresh });
+    } else if (!fresh) {
+      setSelected(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [byAlpha2]);
+
+  // ESC 로 상세 패널 닫기
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelected(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected]);
 
   const colorFor = useCallback(
     (agg: CountryAggregate | undefined): string => {
@@ -113,6 +144,7 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
                     const hasData = !!agg && agg.total >= MIN_COUNT_FOR_COLOR;
                     const name =
                       (geo.properties as { name?: string } | null)?.name ?? alpha2 ?? "—";
+                    const isSelected = selected?.alpha2 === alpha2;
 
                     return (
                       <Geography
@@ -120,8 +152,8 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
                         geography={geo}
                         className="dark:[&[fill='#e5e7eb']]:fill-neutral-700"
                         fill={fill}
-                        stroke="#ffffff"
-                        strokeWidth={0.3}
+                        stroke={isSelected ? HOVER_STROKE : "#ffffff"}
+                        strokeWidth={isSelected ? 1.2 : 0.3}
                         style={{
                           default: { outline: "none" },
                           hover: {
@@ -131,6 +163,11 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
                             cursor: hasData ? "pointer" : "default",
                           },
                           pressed: { outline: "none" },
+                        }}
+                        onClick={() => {
+                          if (!hasData || !alpha2 || !agg) return;
+                          setSelected({ alpha2, name, agg });
+                          setTooltip(null);
                         }}
                         onMouseEnter={(event) => {
                           const lines = agg
@@ -202,7 +239,7 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
           </p>
         </div>
 
-        {tooltip ? (
+        {tooltip && !selected ? (
           <div
             role="tooltip"
             className={cn(
@@ -222,7 +259,105 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
           </div>
         ) : null}
       </div>
+
+      <AnimatePresence>
+        {selected ? (
+          <CountryDetail
+            key={selected.alpha2}
+            selected={selected}
+            optionIndex={optionIndex}
+            optionLabel={optionLabel}
+            onClose={() => setSelected(null)}
+            closeLabel={t("map.close")}
+            totalLabelFn={(n) => t("results.totalParticipants", { count: n })}
+          />
+        ) : null}
+      </AnimatePresence>
     </section>
+  );
+}
+
+function CountryDetail({
+  selected,
+  optionIndex,
+  optionLabel,
+  onClose,
+  closeLabel,
+  totalLabelFn,
+}: {
+  selected: SelectedCountry;
+  optionIndex: Record<string, number>;
+  optionLabel: Record<string, string>;
+  onClose: () => void;
+  closeLabel: string;
+  totalLabelFn: (count: number) => string;
+}) {
+  return (
+    <motion.aside
+      role="dialog"
+      aria-label={selected.name}
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 8 }}
+      transition={{ duration: 0.25, ease: "easeOut" }}
+      className="rounded-2xl bg-brand-50 p-4 dark:bg-brand-950/30"
+    >
+      <header className="mb-3 flex items-start gap-3">
+        <div className="flex flex-1 flex-col">
+          <span className="font-display text-base font-semibold text-neutral-900 dark:text-neutral-50">
+            {selected.name}
+          </span>
+          <span className="text-xs tabular-nums text-neutral-600 dark:text-neutral-400">
+            {totalLabelFn(selected.agg.total)}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label={closeLabel}
+          className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-white hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-900 dark:hover:text-neutral-100"
+        >
+          <X size={14} />
+        </button>
+      </header>
+
+      <ul className="flex flex-col gap-2">
+        {selected.agg.options.map((o) => {
+          const idx = optionIndex[o.optionId] ?? 0;
+          const color = OPTION_COLORS[idx % OPTION_COLORS.length] ?? "#9ca3af";
+          const label = optionLabel[o.optionId] ?? o.optionId.slice(0, 6);
+          const em = optionEmoji(o.optionId);
+          return (
+            <li key={o.optionId} className="flex flex-col gap-1">
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="flex items-center gap-1.5 text-sm text-neutral-800 dark:text-neutral-200">
+                  {em ? <span aria-hidden>{em}</span> : null}
+                  <span className="truncate">{label}</span>
+                </span>
+                <span className="font-display text-sm font-semibold tabular-nums text-neutral-900 dark:text-neutral-100">
+                  {o.percent}%{" "}
+                  <span className="text-xs font-normal text-neutral-500 dark:text-neutral-400">
+                    ({o.count})
+                  </span>
+                </span>
+              </div>
+              <div
+                className="relative h-1.5 w-full overflow-hidden rounded-full bg-white dark:bg-neutral-900"
+                aria-hidden
+              >
+                <div
+                  className="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
+                  style={{
+                    width: `${Math.max(o.percent, 2)}%`,
+                    backgroundColor: color,
+                  }}
+                />
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </motion.aside>
   );
 }
 

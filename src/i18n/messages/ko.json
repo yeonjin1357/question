@@ -6,6 +6,14 @@
   "home": {
     "todaysQuestion": "오늘의 질문"
   },
+  "history": {
+    "title": "내 답들",
+    "subtitle": "지금까지 답한 질문들이에요.",
+    "privacyNote": "오늘의 세션 해시 기준입니다 — 며칠 단위 사용자 식별자를 저장하지 않아요. 매일 UTC 00:00에 일일 솔트가 바뀌면서 내역도 초기화됩니다.",
+    "empty": "오늘은 아직 답하지 않았어요.",
+    "youAnswered": "내 답: {text}",
+    "navLabel": "내 답"
+  },
   "about": {
     "title": "하루 한 질문",
     "subtitle": "하루에 하나의 질문. 전 세계가 답합니다.",
@@ -55,7 +63,8 @@
     "zoomIn": "확대",
     "zoomOut": "축소",
     "reset": "초기화",
-    "hint": "드래그로 이동 · 스크롤로 확대"
+    "hint": "드래그로 이동 · 스크롤로 확대 · 국가 클릭",
+    "close": "닫기"
   },
   "streak": {
     "daysInARow": "{count}일 연속",

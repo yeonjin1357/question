@@ -6,6 +6,14 @@
   "home": {
     "todaysQuestion": "今日の質問"
   },
+  "history": {
+    "title": "わたしの回答",
+    "subtitle": "これまでに答えた質問。",
+    "privacyNote": "今日のセッションハッシュに基づきます — 日をまたぐ識別子は保存しません。UTC 00:00 に日次ソルトが変わると履歴もリセットされます。",
+    "empty": "今日はまだ回答していません。",
+    "youAnswered": "あなたの答え: {text}",
+    "navLabel": "わたしの回答"
+  },
   "about": {
     "title": "一日一問",
     "subtitle": "一つの質問、一日、世界が答える。",
@@ -55,7 +63,8 @@
     "zoomIn": "拡大",
     "zoomOut": "縮小",
     "reset": "リセット",
-    "hint": "ドラッグで移動 · スクロールで拡大"
+    "hint": "ドラッグで移動 · スクロールで拡大 · 国をクリック",
+    "close": "閉じる"
   },
   "streak": {
     "daysInARow": "{count}日連続",
