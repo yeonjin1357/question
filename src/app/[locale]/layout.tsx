@@ -2,13 +2,15 @@ import "../globals.css";
 import "@/lib/env";
 
 import type { Metadata } from "next";
+import { Space_Grotesk } from "next/font/google";
 import localFont from "next/font/local";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { CookieNotice } from "@/components/shared/CookieNotice";
+import { Footer } from "@/components/shared/Footer";
+import { Header } from "@/components/shared/Header";
 import { PlausibleScript } from "@/components/shared/PlausibleScript";
 import { routing } from "@/i18n/routing";
 import { env } from "@/lib/env";
@@ -22,6 +24,12 @@ const geistMono = localFont({
   src: "../fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
+});
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 const DEFAULT_DESCRIPTION =
@@ -68,32 +76,19 @@ export default async function LocaleLayout({
       <head>
         <PlausibleScript />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} bg-gradient-to-b from-brand-50 via-white to-white antialiased`}
+      >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-neutral-900 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-sm focus:text-white"
         >
           {t("a11y.skipToMain")}
         </a>
         <NextIntlClientProvider>
+          <Header locale={locale} />
           {children}
-          <footer className="mx-auto flex max-w-2xl flex-wrap items-center justify-center gap-4 px-8 pb-8 text-xs text-neutral-500">
-            <Link href={`/${locale}/privacy`} className="hover:text-neutral-800">
-              {t("legal.privacy")}
-            </Link>
-            <span aria-hidden>·</span>
-            <Link href={`/${locale}/terms`} className="hover:text-neutral-800">
-              {t("legal.terms")}
-            </Link>
-            <span aria-hidden>·</span>
-            <Link href={`/${locale}/archive`} className="hover:text-neutral-800">
-              {t("archive.title")}
-            </Link>
-            <span aria-hidden>·</span>
-            <Link href={`/${locale}/suggest`} className="hover:text-neutral-800">
-              {t("suggest.title")}
-            </Link>
-          </footer>
+          <Footer locale={locale} />
           <CookieNotice />
         </NextIntlClientProvider>
       </body>

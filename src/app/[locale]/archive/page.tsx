@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Chip } from "@/components/ui/Chip";
 import { getArchive } from "@/lib/db/queries/archive";
+import { categoryEmoji } from "@/lib/ui/category-emoji";
 
 export const dynamic = "force-dynamic";
 
@@ -47,51 +51,62 @@ export default async function ArchiveListPage({
   });
 
   return (
-    <main id="main-content" className="mx-auto flex min-h-screen max-w-3xl flex-col items-stretch gap-8 p-8 pt-16">
-      <header className="flex flex-col gap-3">
-        <Link href={`/${locale}`} className="text-xs text-neutral-500 hover:text-neutral-800">
-          ← {t("app.title")}
-        </Link>
-        <h1 className="text-3xl font-bold tracking-tight">{t("archive.title")}</h1>
+    <main
+      id="main-content"
+      className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-8 px-5 py-8 sm:px-8"
+    >
+      <header className="flex flex-col gap-2">
+        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          {t("archive.title")}
+        </h1>
+        <p className="text-sm text-neutral-600">🗂️ Every question, every day.</p>
       </header>
 
-      <nav
-        aria-label="Category filter"
-        className="flex flex-wrap gap-2 border-b border-neutral-200 pb-4"
-      >
-        <CategoryChip
-          locale={locale}
-          current={category}
-          value={undefined}
-          label={t("archive.all")}
-        />
+      <nav aria-label="Category filter" className="flex flex-wrap gap-2">
+        <CategoryChipLink locale={locale} current={category} value={undefined} label={t("archive.all")} />
         {CATEGORIES.map((c) => (
-          <CategoryChip key={c} locale={locale} current={category} value={c} label={c} />
+          <CategoryChipLink key={c} locale={locale} current={category} value={c} label={c} />
         ))}
       </nav>
 
       {page.items.length === 0 ? (
-        <p className="text-sm text-neutral-500">{t("archive.noItems")}</p>
+        <Card variant="flat" padded className="text-center text-sm text-neutral-500">
+          {t("archive.noItems")}
+        </Card>
       ) : (
-        <ul className="flex flex-col divide-y divide-neutral-200">
+        <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {page.items.map((item) => (
-            <li key={item.id} className="py-4">
+            <li key={item.id}>
               <Link
                 href={`/${locale}/archive/${item.publishDate}`}
-                className="flex flex-col gap-1 hover:text-neutral-700"
+                className="group block h-full rounded-3xl bg-white p-5 shadow-soft transition-all hover:shadow-pop"
               >
-                <span className="flex items-center gap-3 text-xs uppercase tracking-widest text-neutral-500">
-                  <time dateTime={item.publishDate}>{item.publishDate}</time>
-                  <span>·</span>
-                  <span>{item.category}</span>
-                </span>
-                <span className="text-base font-medium text-neutral-900">{item.text}</span>
-                <span className="text-xs text-neutral-500">
-                  {t("results.totalParticipants", { count: item.totalResponses })}
-                  {item.topCountry
-                    ? ` · ${t("archive.topCountryPrefix", { country: item.topCountry })}`
-                    : null}
-                </span>
+                <div className="mb-3 flex items-center gap-2">
+                  <span aria-hidden className="text-xl">
+                    {categoryEmoji(item.category)}
+                  </span>
+                  <Chip tone="accent">{item.category}</Chip>
+                  <time
+                    dateTime={item.publishDate}
+                    className="ml-auto text-xs text-neutral-400 tabular-nums"
+                  >
+                    {item.publishDate}
+                  </time>
+                </div>
+                <p className="font-display text-lg font-medium leading-snug text-neutral-900 group-hover:text-brand-700">
+                  {item.text}
+                </p>
+                <div className="mt-4 flex items-center gap-2 text-xs text-neutral-500">
+                  <span className="tabular-nums">
+                    {t("results.totalParticipants", { count: item.totalResponses })}
+                  </span>
+                  {item.topCountry ? (
+                    <>
+                      <span aria-hidden>·</span>
+                      <span>{t("archive.topCountryPrefix", { country: item.topCountry })}</span>
+                    </>
+                  ) : null}
+                </div>
               </Link>
             </li>
           ))}
@@ -99,23 +114,24 @@ export default async function ArchiveListPage({
       )}
 
       {page.nextCursor ? (
-        <nav className="flex justify-center pt-2">
+        <div className="flex justify-center pt-2">
           <Link
             href={{
               pathname: `/${locale}/archive`,
               query: { ...(category ? { category } : {}), cursor: page.nextCursor },
             }}
-            className="rounded-md border border-neutral-300 px-4 py-2 text-sm hover:bg-neutral-50"
           >
-            {t("cta.loadMore")} →
+            <Button variant="secondary" size="md">
+              {t("cta.loadMore")} →
+            </Button>
           </Link>
-        </nav>
+        </div>
       ) : null}
     </main>
   );
 }
 
-function CategoryChip({
+function CategoryChipLink({
   locale,
   current,
   value,
@@ -127,19 +143,18 @@ function CategoryChip({
   label: string;
 }) {
   const isActive = (current ?? null) === (value ?? null);
+  const emoji = value ? categoryEmoji(value) : null;
   return (
     <Link
       href={{
         pathname: `/${locale}/archive`,
         query: value ? { category: value } : {},
       }}
-      className={
-        isActive
-          ? "rounded-full bg-neutral-900 px-3 py-1 text-xs text-white"
-          : "rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-600 hover:bg-neutral-50"
-      }
+      aria-current={isActive ? "page" : undefined}
     >
-      {label}
+      <Chip tone="brand" active={isActive} icon={emoji ? <span>{emoji}</span> : undefined}>
+        {label}
+      </Chip>
     </Link>
   );
 }

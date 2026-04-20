@@ -1,19 +1,11 @@
 "use client";
 
+import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 const STORAGE_KEY = "oqad:cookie-notice-ack";
 
-/**
- * 쿠키 고지 배너.
- *
- * 사이트는 "strictly necessary" 쿠키(세션 식별용)만 사용하므로 GDPR 상 동의가
- * 법적으로 필수는 아니나, 투명성 차원에서 한 번 안내 후 localStorage 플래그로 다시 띄우지 않음.
- *
- * localStorage 접근은 클라이언트 전용이라 마운트 후 체크하며, 최초 프레임엔 렌더하지 않아
- * SSR/hydration 미스매치를 피함.
- */
 export function CookieNotice() {
   const t = useTranslations("legal");
   const [visible, setVisible] = useState(false);
@@ -24,7 +16,7 @@ export function CookieNotice() {
         setVisible(true);
       }
     } catch {
-      // localStorage 차단(Safari 프라이빗 모드 등)에선 배너 숨김 처리
+      // localStorage 차단 환경에선 배너 숨김
     }
   }, []);
 
@@ -43,15 +35,17 @@ export function CookieNotice() {
     <div
       role="region"
       aria-label="Cookie notice"
-      className="fixed inset-x-3 bottom-3 z-40 flex items-start gap-3 rounded-lg border border-neutral-200 bg-white p-4 text-sm shadow-md sm:inset-x-auto sm:right-4 sm:max-w-md"
+      className="fixed inset-x-3 bottom-3 z-40 flex items-center gap-3 rounded-full bg-white px-5 py-3 text-sm shadow-pop sm:inset-x-auto sm:right-4 sm:max-w-md"
     >
-      <p className="flex-1 text-neutral-700">{t("cookieNoticeBody")}</p>
+      <span aria-hidden>🍪</span>
+      <p className="flex-1 text-xs text-neutral-700">{t("cookieNoticeBody")}</p>
       <button
         type="button"
         onClick={dismiss}
-        className="shrink-0 rounded-md border border-neutral-300 px-3 py-1.5 text-xs font-medium hover:bg-neutral-50"
+        aria-label={t("cookieNoticeAck")}
+        className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-neutral-500 transition-colors hover:bg-neutral-100 hover:text-neutral-900"
       >
-        {t("cookieNoticeAck")}
+        <X size={16} />
       </button>
     </div>
   );

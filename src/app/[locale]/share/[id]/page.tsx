@@ -4,8 +4,13 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { z } from "zod";
 
+import { Badge } from "@/components/ui/Badge";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Chip } from "@/components/ui/Chip";
 import { getQuestionById } from "@/lib/db/queries/questions";
 import { getAggregates } from "@/lib/db/queries/results";
+import { categoryEmoji } from "@/lib/ui/category-emoji";
 import { cn } from "@/lib/utils/cn";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +25,7 @@ const searchSchema = z.object({
 });
 
 type SharePageSearch = { opt?: string; country?: string };
+const LETTERS = ["A", "B", "C", "D", "E"];
 
 export async function generateMetadata({
   params,
@@ -83,69 +89,92 @@ export default async function SharePage({
   const aggregates = await getAggregates(idParsed.data.id);
   const globalMap = new Map(aggregates.global.map((g) => [g.optionId, g]));
   const totalVotes = aggregates.global.reduce((s, g) => s + g.count, 0);
+  const emoji = categoryEmoji(question.question.category);
 
   return (
-    <main id="main-content" className="mx-auto flex min-h-screen max-w-2xl flex-col items-stretch gap-10 p-8 pt-16">
-      <header className="flex flex-col items-center gap-2">
-        <span className="text-xs uppercase tracking-widest text-neutral-500">
-          {t("app.title")}
-        </span>
-        <span className="text-xs text-neutral-400">{question.question.publishDate}</span>
-      </header>
+    <main
+      id="main-content"
+      className="mx-auto flex min-h-screen w-full max-w-2xl flex-col gap-6 px-5 py-8 sm:px-8"
+    >
+      <Card variant="elevated" padded className="flex flex-col gap-6 animate-pop-in">
+        <header className="flex flex-wrap items-center gap-2">
+          <Chip tone="accent" icon={<span>{emoji}</span>}>
+            {question.question.category}
+          </Chip>
+          <time
+            dateTime={question.question.publishDate}
+            className="ml-auto text-xs text-neutral-400 tabular-nums"
+          >
+            {question.question.publishDate}
+          </time>
+        </header>
 
-      <h1 className="text-balance text-center text-3xl font-bold leading-tight sm:text-4xl">
-        {question.question.text}
-      </h1>
+        <h1 className="text-balance font-display text-3xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">
+          {question.question.text}
+        </h1>
 
-      <ul className="flex w-full flex-col gap-3">
-        {question.options.map((o) => {
-          const ag = globalMap.get(o.id);
-          const pct = ag?.percent ?? 0;
-          const isHighlight = o.id === highlightOpt;
-          return (
-            <li key={o.id}>
-              <div
-                className={cn(
-                  "relative overflow-hidden rounded-lg border px-4 py-3",
-                  isHighlight ? "border-neutral-900" : "border-neutral-300",
-                )}
-              >
-                <div
-                  className={cn(
-                    "absolute inset-y-0 left-0 transition-all",
-                    isHighlight ? "bg-neutral-900" : "bg-neutral-200",
-                  )}
-                  style={{ width: `${pct}%` }}
-                  aria-hidden
-                />
-                <div className="relative flex items-center justify-between">
-                  <span
-                    className={cn(
-                      "text-base",
-                      isHighlight ? "font-semibold text-white mix-blend-difference" : "text-neutral-900",
-                    )}
+        <ul className="flex w-full flex-col gap-3">
+          {question.options.map((o, idx) => {
+            const ag = globalMap.get(o.id);
+            const pct = ag?.percent ?? 0;
+            const isHighlight = o.id === highlightOpt;
+            return (
+              <li key={o.id} className="flex items-center gap-3">
+                <Badge tone={isHighlight ? "brand" : "neutral"}>
+                  {LETTERS[idx] ?? String(idx + 1)}
+                </Badge>
+                <div className="flex-1">
+                  <div className="mb-1 flex items-baseline justify-between gap-3">
+                    <span
+                      className={cn(
+                        "text-sm",
+                        isHighlight ? "font-semibold text-brand-700" : "text-neutral-800",
+                      )}
+                    >
+                      {o.text}
+                    </span>
+                    <span
+                      className={cn(
+                        "whitespace-nowrap font-display text-base font-semibold tabular-nums",
+                        isHighlight ? "text-brand-600" : "text-neutral-600",
+                      )}
+                    >
+                      {pct}%
+                    </span>
+                  </div>
+                  <div
+                    className="relative h-2.5 w-full overflow-hidden rounded-full bg-neutral-100"
+                    aria-hidden
                   >
-                    {o.text}
-                  </span>
-                  <span className="relative text-sm tabular-nums text-neutral-600">{pct}%</span>
+                    <div
+                      className={cn(
+                        "absolute inset-y-0 left-0 rounded-full transition-all duration-500",
+                        isHighlight
+                          ? "bg-gradient-to-r from-brand-400 to-brand-500"
+                          : "bg-neutral-300",
+                      )}
+                      style={{ width: `${Math.max(pct, 2)}%` }}
+                    />
+                  </div>
                 </div>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+              </li>
+            );
+          })}
+        </ul>
 
-      <p className="text-center text-sm text-neutral-500">
-        {t("results.totalParticipants", { count: totalVotes })}
-        {highlightCountry ? ` · ${highlightCountry}` : null}
-      </p>
+        <p className="text-center text-xs text-neutral-500">
+          {t("results.totalParticipants", { count: totalVotes })}
+          {highlightCountry ? ` · ${highlightCountry}` : null}
+        </p>
+      </Card>
 
-      <Link
-        href={`/${locale}`}
-        className="self-center rounded-md bg-neutral-900 px-6 py-3 text-sm font-medium text-white hover:bg-neutral-700"
-      >
-        {t("cta.answer")} →
-      </Link>
+      <div className="flex justify-center">
+        <Link href={`/${locale}`}>
+          <Button size="lg" rightIcon={<span aria-hidden>→</span>}>
+            {t("cta.answer")}
+          </Button>
+        </Link>
+      </div>
     </main>
   );
 }

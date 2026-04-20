@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { QuestionCard } from "@/components/question/QuestionCard";
+import { Card } from "@/components/ui/Card";
 import { getTodayQuestion } from "@/lib/db/queries/questions";
 import { getMyResponse } from "@/lib/db/queries/responses";
 import { getAggregates } from "@/lib/db/queries/results";
@@ -46,14 +47,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   if (!today) {
     return (
-      <main id="main-content" className="flex min-h-screen flex-col items-center justify-center gap-6 p-8">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">{t("app.title")}</h1>
-        <p className="max-w-md text-center text-base">{t("question.noQuestionToday")}</p>
+      <main id="main-content" className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center gap-6 px-5 py-16 text-center sm:px-8">
+        <span aria-hidden className="text-6xl">🌱</span>
+        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          {t("app.title")}
+        </h1>
+        <p className="max-w-md text-base text-neutral-600">{t("question.noQuestionToday")}</p>
       </main>
     );
   }
 
-  // 서버에서 직접 세션 해시로 myResponse 조회 — 페이지 첫 렌더에 이미 "답했는지" 반영.
   const hdrs = await headers();
   const ip =
     hdrs.get("cf-connecting-ip") ?? hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
@@ -61,16 +64,16 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const sessionHash = computeSessionHash(ip, ua);
   const myResponse = await getMyResponse(today.question.id, sessionHash);
 
-  // 재방문 사용자에겐 초기 렌더에 이미 집계 결과를 함께 내려 깜빡임 없이 결과 표시.
   const initialResults = myResponse ? await getAggregates(today.question.id) : null;
 
   return (
-    <main id="main-content" className="mx-auto flex min-h-screen max-w-2xl flex-col items-stretch gap-10 p-8 pt-16">
-      <div className="text-center text-xs uppercase tracking-widest text-neutral-500">
-        {t("app.title")}
-      </div>
-
-      <QuestionCard today={today} myResponse={myResponse} initialResults={initialResults} />
+    <main
+      id="main-content"
+      className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-5 pb-16 pt-6 sm:px-8 sm:pt-10"
+    >
+      <Card variant="elevated" padded className="animate-pop-in">
+        <QuestionCard today={today} myResponse={myResponse} initialResults={initialResults} />
+      </Card>
     </main>
   );
 }

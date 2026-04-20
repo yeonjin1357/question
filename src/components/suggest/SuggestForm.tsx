@@ -1,10 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, Plus, Send, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useMemo, useState } from "react";
 
-import { cn } from "@/lib/utils/cn";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { suggestQuestionSchema } from "@/lib/validation/suggestion";
 
 type OptionRow = { id: number; text: string };
@@ -20,6 +22,9 @@ type Status =
   | { kind: "submitting" }
   | { kind: "success"; id: string }
   | { kind: "error"; message: string };
+
+const INPUT_CLASS =
+  "w-full rounded-2xl border-2 border-neutral-200 bg-white px-4 py-3 text-base transition-colors focus:border-brand-400 focus:outline-none";
 
 export function SuggestForm({ locale }: SuggestFormProps) {
   const t = useTranslations();
@@ -63,7 +68,6 @@ export function SuggestForm({ locale }: SuggestFormProps) {
     event.preventDefault();
     setFieldErrors({});
 
-    // 클라이언트 검증 — 서버 재검증 전 즉각 피드백
     const parsed = suggestQuestionSchema.safeParse(payload);
     if (!parsed.success) {
       const errs: Record<string, string> = {};
@@ -111,115 +115,131 @@ export function SuggestForm({ locale }: SuggestFormProps) {
   }
 
   return (
-    <main id="main-content" className="mx-auto flex min-h-screen max-w-xl flex-col items-stretch gap-6 p-8 pt-16">
-      <header className="flex flex-col gap-2">
-        <Link href={`/${locale}`} className="text-xs text-neutral-500 hover:text-neutral-800">
-          {t("cta.backToHome")}
-        </Link>
-        <h1 className="text-2xl font-bold tracking-tight">{t("suggest.title")}</h1>
+    <main
+      id="main-content"
+      className="mx-auto flex min-h-screen w-full max-w-xl flex-col gap-6 px-5 py-8 sm:px-8"
+    >
+      <header className="flex flex-col items-start gap-2">
+        <span aria-hidden className="text-5xl">
+          💡
+        </span>
+        <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          {t("suggest.title")}
+        </h1>
         <p className="text-sm text-neutral-600">{t("suggest.description")}</p>
       </header>
 
-      {status.kind === "success" ? (
-        <div
-          role="status"
-          className="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-900"
-        >
-          {t("suggest.success")}
-        </div>
-      ) : null}
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
-        <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium">{t("suggest.questionLabel")}</span>
-          <textarea
-            value={questionText}
-            onChange={(e) => setQuestionText(e.target.value)}
-            rows={3}
-            minLength={10}
-            maxLength={200}
-            required
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-base focus:border-neutral-600 focus:outline-none"
-          />
-          <span className="flex justify-between text-xs text-neutral-500">
-            <span>{fieldErrors.questionText ?? ""}</span>
-            <span>{questionText.trim().length} / 200</span>
-          </span>
-        </label>
-
-        <fieldset className="flex flex-col gap-3">
-          <legend className="text-sm font-medium">{t("suggest_form.optionsLegend")}</legend>
-          {options.map((o, i) => (
-            <div key={o.id} className="flex gap-2">
-              <input
-                type="text"
-                value={o.text}
-                onChange={(e) => handleOptionChange(o.id, e.target.value)}
-                minLength={1}
-                maxLength={50}
-                placeholder={t("suggest.optionLabel", { n: i + 1 })}
-                required
-                className="flex-1 rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-600 focus:outline-none"
-              />
-              {canRemoveOption ? (
-                <button
-                  type="button"
-                  onClick={() => handleRemoveOption(o.id)}
-                  className="rounded-md border border-neutral-300 px-3 py-2 text-xs hover:bg-neutral-50"
-                >
-                  {t("suggest.removeOption")}
-                </button>
-              ) : null}
-            </div>
-          ))}
-          {fieldErrors.options ? (
-            <p className="text-xs text-red-600">{fieldErrors.options}</p>
-          ) : null}
-          {canAddOption ? (
-            <button
-              type="button"
-              onClick={handleAddOption}
-              className="self-start rounded-md border border-dashed border-neutral-400 px-3 py-2 text-xs text-neutral-600 hover:bg-neutral-50"
-            >
-              {t("suggest.addOption")}
-            </button>
-          ) : null}
-        </fieldset>
-
-        <label className="flex flex-col gap-1.5">
-          <span className="text-sm font-medium">{t("suggest.emailLabel")}</span>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
-            className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-neutral-600 focus:outline-none"
-          />
-          {fieldErrors.submitterEmail ? (
-            <span className="text-xs text-red-600">{fieldErrors.submitterEmail}</span>
-          ) : null}
-        </label>
-
-        <div className="flex items-center gap-3">
-          <button
-            type="submit"
-            disabled={status.kind === "submitting"}
-            className={cn(
-              "rounded-md bg-neutral-900 px-5 py-2 text-sm font-medium text-white transition",
-              status.kind === "submitting"
-                ? "cursor-default opacity-70"
-                : "hover:bg-neutral-700",
-            )}
+      <AnimatePresence>
+        {status.kind === "success" ? (
+          <motion.div
+            role="status"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="flex items-center gap-3 rounded-2xl bg-accent-green px-4 py-3 text-sm text-neutral-900"
           >
-            {status.kind === "submitting" ? t("suggest.submitting") : t("suggest.submit")}
-          </button>
-          {status.kind === "error" ? (
-            <p role="alert" className="text-sm text-red-600">
-              {status.message}
-            </p>
-          ) : null}
-        </div>
-      </form>
+            <CheckCircle2 size={18} className="text-green-700" aria-hidden />
+            <span className="font-medium">{t("suggest.success")}</span>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
+      <Card variant="elevated" padded>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
+          <label className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-neutral-700">
+              {t("suggest.questionLabel")}
+            </span>
+            <textarea
+              value={questionText}
+              onChange={(e) => setQuestionText(e.target.value)}
+              rows={3}
+              minLength={10}
+              maxLength={200}
+              required
+              className={INPUT_CLASS}
+            />
+            <span className="flex justify-between text-xs text-neutral-500">
+              <span className="text-red-600">{fieldErrors.questionText ?? ""}</span>
+              <span className="tabular-nums">{questionText.trim().length} / 200</span>
+            </span>
+          </label>
+
+          <fieldset className="flex flex-col gap-3">
+            <legend className="text-sm font-medium text-neutral-700">
+              {t("suggest_form.optionsLegend")}
+            </legend>
+            {options.map((o, i) => (
+              <div key={o.id} className="flex gap-2">
+                <input
+                  type="text"
+                  value={o.text}
+                  onChange={(e) => handleOptionChange(o.id, e.target.value)}
+                  minLength={1}
+                  maxLength={50}
+                  placeholder={t("suggest.optionLabel", { n: i + 1 })}
+                  required
+                  className={INPUT_CLASS}
+                />
+                {canRemoveOption ? (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveOption(o.id)}
+                    aria-label={t("suggest.removeOption")}
+                    className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-neutral-400 transition-colors hover:bg-red-50 hover:text-red-600"
+                  >
+                    <X size={18} />
+                  </button>
+                ) : null}
+              </div>
+            ))}
+            {fieldErrors.options ? (
+              <p className="text-xs text-red-600">{fieldErrors.options}</p>
+            ) : null}
+            {canAddOption ? (
+              <button
+                type="button"
+                onClick={handleAddOption}
+                className="inline-flex w-fit items-center gap-1.5 rounded-full border-2 border-dashed border-neutral-300 px-3 py-1.5 text-xs text-neutral-600 transition-colors hover:border-brand-400 hover:text-brand-700"
+              >
+                <Plus size={14} /> {t("suggest.addOption")}
+              </button>
+            ) : null}
+          </fieldset>
+
+          <label className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-neutral-700">
+              {t("suggest.emailLabel")}
+            </span>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              className={INPUT_CLASS}
+            />
+            {fieldErrors.submitterEmail ? (
+              <span className="text-xs text-red-600">{fieldErrors.submitterEmail}</span>
+            ) : null}
+          </label>
+
+          <div className="flex items-center gap-3">
+            <Button
+              type="submit"
+              loading={status.kind === "submitting"}
+              leftIcon={<Send size={16} />}
+              size="lg"
+            >
+              {status.kind === "submitting" ? t("suggest.submitting") : t("suggest.submit")}
+            </Button>
+            {status.kind === "error" ? (
+              <p role="alert" className="text-sm text-red-600">
+                {status.message}
+              </p>
+            ) : null}
+          </div>
+        </form>
+      </Card>
     </main>
   );
 }

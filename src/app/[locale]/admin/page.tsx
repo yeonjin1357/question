@@ -1,6 +1,7 @@
 import { setRequestLocale } from "next-intl/server";
 
 import { AdminSuggestionList } from "@/components/admin/AdminSuggestionList";
+import { Chip } from "@/components/ui/Chip";
 import { listSuggestionsByStatus } from "@/lib/db/queries/admin";
 
 export const dynamic = "force-dynamic";
@@ -23,24 +24,27 @@ export default async function AdminPage({
   const items = await listSuggestionsByStatus(tab);
 
   return (
-    <main id="main-content" className="mx-auto flex min-h-screen max-w-3xl flex-col items-stretch gap-6 p-8 pt-12">
-      <header className="flex flex-col gap-2">
-        <span className="text-xs uppercase tracking-widest text-neutral-500">admin</span>
-        <h1 className="text-2xl font-bold">Suggestions queue</h1>
+    <main
+      id="main-content"
+      className="mx-auto flex min-h-screen w-full max-w-3xl flex-col gap-6 px-5 py-8 sm:px-8"
+    >
+      <header className="flex flex-col gap-1">
+        <span className="font-display text-xs font-medium uppercase tracking-widest text-brand-600">
+          🔒 Admin
+        </span>
+        <h1 className="font-display text-2xl font-semibold tracking-tight">Suggestions queue</h1>
       </header>
 
-      <nav className="flex gap-2 border-b border-neutral-200 pb-2 text-sm">
+      <nav className="flex flex-wrap gap-2">
         {(["pending", "approved", "rejected"] as const).map((s) => (
           <a
             key={s}
             href={`/${locale}/admin?status=${s}`}
-            className={
-              tab === s
-                ? "rounded-full bg-neutral-900 px-3 py-1 text-xs text-white"
-                : "rounded-full border border-neutral-300 px-3 py-1 text-xs text-neutral-700 hover:bg-neutral-50"
-            }
+            aria-current={tab === s ? "page" : undefined}
           >
-            {s} ({tab === s ? items.length : "…"})
+            <Chip tone="brand" active={tab === s}>
+              {s} {tab === s ? `(${items.length})` : ""}
+            </Chip>
           </a>
         ))}
       </nav>

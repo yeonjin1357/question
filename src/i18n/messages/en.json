@@ -3,6 +3,9 @@
     "title": "One Question a Day",
     "tagline": "One question. One day. The world answers."
   },
+  "home": {
+    "todaysQuestion": "Today's question"
+  },
   "question": {
     "noQuestionToday": "No question today — please check back soon.",
     "translationFallback": "Translation not available in your language. Showing English."

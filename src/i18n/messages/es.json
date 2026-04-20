@@ -3,6 +3,9 @@
     "title": "Una pregunta al día",
     "tagline": "Una pregunta. Un día. El mundo responde."
   },
+  "home": {
+    "todaysQuestion": "La pregunta de hoy"
+  },
   "question": {
     "noQuestionToday": "Aún no hay pregunta para hoy. Vuelve en un rato.",
     "translationFallback": "No hay traducción en tu idioma. Mostrando en inglés."

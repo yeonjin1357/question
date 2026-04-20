@@ -64,10 +64,10 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
   return (
     <section
       aria-label="World map of responses"
-      className="relative flex w-full flex-col gap-3 rounded-lg border border-neutral-200 bg-white p-4"
+      className="relative flex w-full flex-col gap-4 rounded-3xl bg-white p-5 shadow-soft sm:p-6"
     >
-      <header className="flex items-baseline justify-between">
-        <h2 className="text-sm font-semibold">{t("results.world")}</h2>
+      <header className="flex flex-wrap items-baseline justify-between gap-3">
+        <h2 className="font-display text-base font-semibold">{t("results.world")}</h2>
         <Legend options={optionOrder} />
       </header>
 
@@ -138,14 +138,14 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
           <div
             role="tooltip"
             className={cn(
-              "pointer-events-none fixed z-50 rounded-md border border-neutral-200 bg-white px-3 py-2",
-              "text-xs shadow-sm",
+              "pointer-events-none fixed z-50 rounded-2xl bg-white px-3 py-2",
+              "text-xs shadow-pop",
             )}
             style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
           >
-            <div className="font-semibold">{tooltip.country}</div>
+            <div className="mb-0.5 font-display text-sm font-semibold">{tooltip.country}</div>
             {tooltip.lines.map((line, i) => (
-              <div key={i} className="text-neutral-600">
+              <div key={i} className="text-neutral-600 tabular-nums">
                 {line}
               </div>
             ))}
@@ -158,16 +158,19 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
 
 function Legend({ options }: { options: Array<{ id: string; text: string }> }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-600">
+    <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-600">
       {options.map((o, i) => (
-        <div key={o.id} className="flex items-center gap-1.5">
+        <span
+          key={o.id}
+          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-50 px-2.5 py-1"
+        >
           <span
-            className="inline-block h-3 w-3 rounded"
+            className="inline-block h-2.5 w-2.5 rounded-full"
             style={{ backgroundColor: OPTION_COLORS[i % OPTION_COLORS.length] }}
             aria-hidden
           />
-          <span>{o.text}</span>
-        </div>
+          <span className="font-medium">{o.text}</span>
+        </span>
       ))}
     </div>
   );

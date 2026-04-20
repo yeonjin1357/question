@@ -3,6 +3,9 @@
     "title": "一日一問",
     "tagline": "一つの質問、一日、世界が答える。"
   },
+  "home": {
+    "todaysQuestion": "今日の質問"
+  },
   "question": {
     "noQuestionToday": "今日の質問はまだ準備できていません。後ほどご確認ください。",
     "translationFallback": "お使いの言語の翻訳がありません。英語で表示します。"

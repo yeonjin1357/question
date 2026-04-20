@@ -3,12 +3,14 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Chip } from "@/components/ui/Chip";
 import type { AdminSuggestion } from "@/lib/db/queries/admin";
 import { cn } from "@/lib/utils/cn";
 
 interface AdminSuggestionListProps {
   items: AdminSuggestion[];
-  /** 현재는 프로퍼티로만 받고 내부 표시에 사용하지 않음. 추후 locale-aware 액션 시 사용. */
   locale?: string;
 }
 
@@ -24,6 +26,9 @@ function nextPublishDate(offsetDays: number): string {
   d.setUTCDate(d.getUTCDate() + offsetDays);
   return d.toISOString().slice(0, 10);
 }
+
+const INPUT =
+  "rounded-xl border-2 border-neutral-200 bg-white px-3 py-1.5 text-sm focus:border-brand-400 focus:outline-none";
 
 export function AdminSuggestionList({ items }: AdminSuggestionListProps) {
   const router = useRouter();
@@ -71,151 +76,150 @@ export function AdminSuggestionList({ items }: AdminSuggestionListProps) {
   }
 
   if (items.length === 0) {
-    return <p className="text-sm text-neutral-500">Empty.</p>;
+    return (
+      <Card variant="flat" padded className="text-center text-sm text-neutral-500">
+        Empty.
+      </Card>
+    );
   }
 
   return (
-    <ul className="flex flex-col divide-y divide-neutral-200">
+    <ul className="flex flex-col gap-4">
       {items.map((item) => {
         const state = rowStates[item.id] ?? { kind: "idle" };
-        // 승인 폼은 기본적으로 "expanded" 상태 + 제출 중("busy") 에도 열려 있어야 함.
         const expanded = state.kind === "expanded" || state.kind === "busy";
         const busy = state.kind === "busy";
         return (
-          <li key={item.id} className="flex flex-col gap-3 py-4">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex flex-col gap-1">
-                <span className="flex items-center gap-2 text-xs text-neutral-500">
-                  <time>{new Date(item.createdAt).toISOString().slice(0, 16)}</time>
-                  <span>·</span>
-                  <span>{item.locale}</span>
-                  {item.submitterEmail ? (
-                    <>
-                      <span>·</span>
-                      <span className="font-mono">{item.submitterEmail}</span>
-                    </>
-                  ) : null}
-                </span>
-                <p className="text-base font-medium">{item.questionText}</p>
-                <ul className="flex flex-wrap gap-1.5">
-                  {item.options.map((o, i) => (
-                    <li
-                      key={i}
-                      className="rounded border border-neutral-300 px-2 py-0.5 text-xs"
+          <li key={item.id}>
+            <Card variant="elevated" padded>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="flex flex-1 flex-col gap-2">
+                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                      <time>{new Date(item.createdAt).toISOString().slice(0, 16)}</time>
+                      <Chip tone="accent">{item.locale}</Chip>
+                      {item.submitterEmail ? (
+                        <span className="font-mono text-[11px]">{item.submitterEmail}</span>
+                      ) : null}
+                    </div>
+                    <p className="font-display text-base font-medium">{item.questionText}</p>
+                    <ul className="flex flex-wrap gap-1.5">
+                      {item.options.map((o, i) => (
+                        <li
+                          key={i}
+                          className="rounded-full bg-neutral-50 px-2.5 py-1 text-xs text-neutral-700"
+                        >
+                          {o.text}
+                        </li>
+                      ))}
+                    </ul>
+                    {item.adminNote ? (
+                      <p className="text-xs italic text-neutral-500">note: {item.adminNote}</p>
+                    ) : null}
+                  </div>
+
+                  {item.status === "pending" ? (
+                    <div className="flex shrink-0 flex-col gap-2">
+                      <Button
+                        variant="primary"
+                        size="sm"
+                        onClick={() =>
+                          updateRow(
+                            item.id,
+                            state.kind === "expanded" ? { kind: "idle" } : { kind: "expanded" },
+                          )
+                        }
+                      >
+                        {expanded ? "Cancel" : "Approve…"}
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={() => {
+                          const note = window.prompt("Reject note (optional):") ?? null;
+                          void reject(item, note);
+                        }}
+                      >
+                        Reject
+                      </Button>
+                    </div>
+                  ) : (
+                    <span
+                      className={cn(
+                        "rounded-full px-2.5 py-1 text-xs font-medium",
+                        item.status === "approved"
+                          ? "bg-accent-green text-green-900"
+                          : "bg-red-100 text-red-800",
+                      )}
                     >
-                      {o.text}
-                    </li>
-                  ))}
-                </ul>
-                {item.adminNote ? (
-                  <p className="text-xs italic text-neutral-500">note: {item.adminNote}</p>
+                      {item.status}
+                    </span>
+                  )}
+                </div>
+
+                {expanded ? (
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      void approve(item);
+                    }}
+                    className="flex flex-wrap items-end gap-3 rounded-2xl bg-brand-50 p-4"
+                  >
+                    <label className="flex flex-col gap-1 text-xs">
+                      Publish date
+                      <input
+                        type="date"
+                        required
+                        value={publishDates[item.id] ?? nextPublishDate(7)}
+                        onChange={(e) =>
+                          setPublishDates((prev) => ({ ...prev, [item.id]: e.target.value }))
+                        }
+                        className={INPUT}
+                      />
+                    </label>
+                    <label className="flex flex-col gap-1 text-xs">
+                      Category
+                      <select
+                        value={categories[item.id] ?? "habits"}
+                        onChange={(e) =>
+                          setCategories((prev) => ({ ...prev, [item.id]: e.target.value }))
+                        }
+                        className={INPUT}
+                      >
+                        {[
+                          "habits",
+                          "food",
+                          "culture",
+                          "values",
+                          "tech",
+                          "home",
+                          "travel",
+                          "work",
+                          "social",
+                          "fun",
+                        ].map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <Button type="submit" loading={busy} size="sm">
+                      {busy ? "Submitting…" : "Create question"}
+                    </Button>
+                  </form>
+                ) : null}
+
+                {state.kind === "error" ? (
+                  <p role="alert" className="text-xs text-red-600">
+                    {state.message}
+                  </p>
+                ) : null}
+                {state.kind === "done" ? (
+                  <p className="text-xs text-green-700">✓ {state.message}</p>
                 ) : null}
               </div>
-
-              {item.status === "pending" ? (
-                <div className="flex shrink-0 flex-col gap-2">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      updateRow(
-                        item.id,
-                        state.kind === "expanded" ? { kind: "idle" } : { kind: "expanded" },
-                      )
-                    }
-                    className="rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-700"
-                  >
-                    {expanded ? "Cancel" : "Approve…"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const note = window.prompt("Reject note (optional):") ?? null;
-                      void reject(item, note);
-                    }}
-                    className="rounded-md border border-neutral-300 px-3 py-1.5 text-xs font-medium hover:bg-neutral-50"
-                  >
-                    Reject
-                  </button>
-                </div>
-              ) : (
-                <span
-                  className={cn(
-                    "rounded-full px-2 py-0.5 text-xs",
-                    item.status === "approved"
-                      ? "bg-green-100 text-green-800"
-                      : "bg-red-100 text-red-800",
-                  )}
-                >
-                  {item.status}
-                </span>
-              )}
-            </div>
-
-            {expanded ? (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  void approve(item);
-                }}
-                className="flex flex-wrap items-end gap-3 rounded-md border border-neutral-200 bg-neutral-50 p-3"
-              >
-                <label className="flex flex-col gap-1 text-xs">
-                  Publish date
-                  <input
-                    type="date"
-                    required
-                    value={publishDates[item.id] ?? nextPublishDate(7)}
-                    onChange={(e) =>
-                      setPublishDates((prev) => ({ ...prev, [item.id]: e.target.value }))
-                    }
-                    className="rounded border border-neutral-300 px-2 py-1 text-sm"
-                  />
-                </label>
-                <label className="flex flex-col gap-1 text-xs">
-                  Category
-                  <select
-                    value={categories[item.id] ?? "habits"}
-                    onChange={(e) =>
-                      setCategories((prev) => ({ ...prev, [item.id]: e.target.value }))
-                    }
-                    className="rounded border border-neutral-300 px-2 py-1 text-sm"
-                  >
-                    {[
-                      "habits",
-                      "food",
-                      "culture",
-                      "values",
-                      "tech",
-                      "home",
-                      "travel",
-                      "work",
-                      "social",
-                      "fun",
-                    ].map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <button
-                  type="submit"
-                  disabled={busy}
-                  className="rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-neutral-700 disabled:opacity-60"
-                >
-                  {busy ? "Submitting…" : "Create question"}
-                </button>
-              </form>
-            ) : null}
-
-            {state.kind === "error" ? (
-              <p role="alert" className="text-xs text-red-600">
-                {state.message}
-              </p>
-            ) : null}
-            {state.kind === "done" ? (
-              <p className="text-xs text-green-700">✓ {state.message}</p>
-            ) : null}
+            </Card>
           </li>
         );
       })}

@@ -3,6 +3,8 @@
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
+import { Button } from "@/components/ui/Button";
+
 export default function LocaleError({
   error,
   reset,
@@ -20,17 +22,18 @@ export default function LocaleError({
     <main
       id="main-content"
       role="alert"
-      className="mx-auto flex min-h-screen max-w-xl flex-col items-center justify-center gap-6 p-8 text-center"
+      className="mx-auto flex min-h-[70vh] max-w-xl flex-col items-center justify-center gap-5 px-5 py-16 text-center sm:px-8"
     >
-      <h1 className="text-3xl font-bold tracking-tight">{t("pageTitle")}</h1>
-      <p className="text-base text-neutral-600 dark:text-neutral-400">{t("pageBody")}</p>
-      <button
-        type="button"
-        onClick={reset}
-        className="rounded-md border border-neutral-300 px-4 py-2 text-sm hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-900"
-      >
+      <span aria-hidden className="text-6xl">
+        🤷
+      </span>
+      <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+        {t("pageTitle")}
+      </h1>
+      <p className="max-w-md text-base text-neutral-600">{t("pageBody")}</p>
+      <Button onClick={reset} variant="primary" size="lg">
         {t("retry")}
-      </button>
+      </Button>
     </main>
   );
 }

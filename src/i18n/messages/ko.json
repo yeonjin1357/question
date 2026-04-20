@@ -3,6 +3,9 @@
     "title": "하루 한 질문",
     "tagline": "하루에 하나의 질문. 전 세계가 답합니다."
   },
+  "home": {
+    "todaysQuestion": "오늘의 질문"
+  },
   "question": {
     "noQuestionToday": "오늘의 질문이 아직 준비되지 않았어요. 잠시 후 다시 확인해 주세요.",
     "translationFallback": "이 언어 번역이 없어 영어로 표시합니다."

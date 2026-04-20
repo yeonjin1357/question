@@ -1,9 +1,12 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useCallback, useState } from "react";
 
 import { ResultsView } from "@/components/results/ResultsView";
+import { Badge } from "@/components/ui/Badge";
 import type { AggregateResult } from "@/lib/db/queries/results";
 import { cn } from "@/lib/utils/cn";
 
@@ -20,21 +23,11 @@ interface QuestionFlowProps {
 type State =
   | { kind: "idle" }
   | { kind: "submitting"; optionId: string }
-  | { kind: "answered"; myOptionId: string; results: AggregateResult | null }
+  | { kind: "answered"; myOptionId: string; results: AggregateResult | null; justAnswered: boolean }
   | { kind: "error"; message: string };
 
-/**
- * 질문 응답 플로우 전체를 담당하는 단일 Client Component.
- *
- * 초기 상태:
- *   - initialMyResponse 가 있으면 바로 `answered` 로 시작 (재방문 UX)
- *   - 그렇지 않으면 `idle` (버튼 표시)
- *
- * 제출 후:
- *   - 201: 서버가 반환한 results 를 그대로 사용 → 한 번의 왕복으로 결과 표시
- *   - 409: /api/results/:id 로 결과 재조회 → 이전 답과 현재 결과 표시
- *   - 기타: error 상태
- */
+const LETTERS = ["A", "B", "C", "D", "E"];
+
 export function QuestionFlow({
   questionId,
   questionText,
@@ -45,7 +38,12 @@ export function QuestionFlow({
   const t = useTranslations();
   const [state, setState] = useState<State>(
     initialMyResponse
-      ? { kind: "answered", myOptionId: initialMyResponse.optionId, results: initialResults }
+      ? {
+          kind: "answered",
+          myOptionId: initialMyResponse.optionId,
+          results: initialResults,
+          justAnswered: false,
+        }
       : { kind: "idle" },
   );
 
@@ -66,6 +64,7 @@ export function QuestionFlow({
             kind: "answered",
             myOptionId: body.data.response.optionId,
             results: body.data.results,
+            justAnswered: true,
           });
           return;
         }
@@ -76,7 +75,7 @@ export function QuestionFlow({
           const prev = body?.error?.details?.previousOptionId ?? optionId;
           const r = await fetch(`/api/results/${questionId}`);
           const results = r.ok ? ((await r.json()) as { data: AggregateResult }).data : null;
-          setState({ kind: "answered", myOptionId: prev, results });
+          setState({ kind: "answered", myOptionId: prev, results, justAnswered: false });
           return;
         }
         if (res.status === 429) {
@@ -93,53 +92,90 @@ export function QuestionFlow({
 
   if (state.kind === "answered") {
     if (!state.results) {
-      return <div className="text-center text-sm text-neutral-500">{t("results.loading")}</div>;
+      return (
+        <div className="flex justify-center py-8 text-sm text-neutral-500">
+          {t("results.loading")}
+        </div>
+      );
     }
     return (
-      <ResultsView
-        results={state.results}
-        options={options}
-        myOptionId={state.myOptionId}
-        questionId={questionId}
-        questionText={questionText}
-      />
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+      >
+        <ResultsView
+          results={state.results}
+          options={options}
+          myOptionId={state.myOptionId}
+          questionId={questionId}
+          questionText={questionText}
+          celebrate={state.justAnswered}
+        />
+      </motion.div>
     );
   }
 
   const disabled = state.kind === "submitting";
 
   return (
-    <div className="flex w-full flex-col items-stretch gap-3">
+    <div className="flex w-full flex-col gap-4">
       <ul className="flex w-full flex-col gap-3">
-        {options.map((o) => {
+        {options.map((o, idx) => {
           const isBusy = state.kind === "submitting" && state.optionId === o.id;
           return (
             <li key={o.id}>
-              <button
+              <motion.button
                 type="button"
                 onClick={() => submit(o.id)}
                 disabled={disabled}
                 aria-busy={isBusy}
+                whileHover={disabled ? undefined : { scale: 1.01 }}
+                whileTap={disabled ? undefined : { scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 className={cn(
-                  "w-full rounded-lg border px-4 py-3 text-center text-base transition",
+                  "flex w-full items-center gap-3 rounded-2xl border-2 bg-white px-4 py-3.5 text-left text-base transition-colors",
                   disabled
-                    ? "cursor-default opacity-70"
-                    : "border-neutral-300 text-neutral-900 hover:border-neutral-600 hover:bg-neutral-50",
-                  isBusy && "border-neutral-900 bg-neutral-900 text-white",
+                    ? "cursor-default border-neutral-200 opacity-70"
+                    : "border-neutral-200 hover:border-brand-400 hover:bg-brand-50",
+                  isBusy && "!border-brand-500 !bg-brand-500 !text-white",
                 )}
               >
-                {o.text}
-              </button>
+                <Badge tone={isBusy ? "brand" : "neutral"} className={isBusy ? "!bg-white !text-brand-600" : ""}>
+                  {LETTERS[idx] ?? String(idx + 1)}
+                </Badge>
+                <span className="flex-1 font-medium">{o.text}</span>
+                {isBusy ? (
+                  <span
+                    aria-hidden
+                    className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+                  />
+                ) : (
+                  <ChevronRight
+                    size={18}
+                    aria-hidden
+                    className={disabled ? "text-neutral-300" : "text-neutral-400"}
+                  />
+                )}
+              </motion.button>
             </li>
           );
         })}
       </ul>
 
-      {state.kind === "error" ? (
-        <p role="alert" className="text-center text-sm text-red-600">
-          {state.message}
-        </p>
-      ) : null}
+      <AnimatePresence>
+        {state.kind === "error" ? (
+          <motion.p
+            role="alert"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="rounded-2xl bg-red-50 px-4 py-3 text-center text-sm text-red-700"
+          >
+            {state.message}
+          </motion.p>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }

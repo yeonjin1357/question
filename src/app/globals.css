@@ -5,13 +5,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --brand-400: #fb923c;
+  --brand-500: #f97316;
+  --brand-600: #ea580c;
 }
 
 body {
@@ -24,9 +20,19 @@ body {
     sans-serif;
 }
 
-/* 키보드 포커스 링 기본 제공. focus-visible 이 적용되는 브라우저에서 마우스 클릭은 링이 뜨지 않음. */
+/* 키보드 포커스 링 — focus-visible 이 적용되는 브라우저에서 마우스 클릭은 링이 뜨지 않음. */
 :where(button, [role="button"], a, input, select, textarea):focus-visible {
-  outline: 2px solid #525252;
+  outline: 2px solid var(--brand-500);
   outline-offset: 2px;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

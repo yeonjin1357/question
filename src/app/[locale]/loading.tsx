@@ -7,10 +7,10 @@ export default async function LocaleLoading() {
       id="main-content"
       aria-busy="true"
       aria-live="polite"
-      className="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-4 p-8 text-center"
+      className="mx-auto flex min-h-[60vh] w-full max-w-2xl flex-col items-center justify-center gap-4 px-5 py-16 text-center sm:px-8"
     >
       <div
-        className="h-6 w-6 animate-spin rounded-full border-2 border-neutral-300 border-t-neutral-900 dark:border-neutral-700 dark:border-t-neutral-100"
+        className="h-8 w-8 animate-spin rounded-full border-[3px] border-brand-200 border-t-brand-500"
         aria-hidden
       />
       <p className="text-sm text-neutral-500">{t("loading")}</p>

@@ -1,16 +1,15 @@
 "use client";
 
+import { Check } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
 import { GlobalBarChart } from "@/components/results/GlobalBarChart";
 import { CountdownBanner } from "@/components/shared/CountdownBanner";
 import { ShareButton } from "@/components/shared/ShareButton";
 import type { AggregateResult } from "@/lib/db/queries/results";
 
-// 세계지도는 react-simple-maps + world-atlas (40KB+ gzipped) 를 번들링합니다.
-// 결과 화면까지 내려가지 않는 사용자에게는 이 비용을 지우지 않기 위해 lazy-load.
-// 지도는 브라우저 전용 렌더라 SSR 스킵 가능.
 const WorldMap = dynamic(
   () => import("@/components/results/WorldMap").then((m) => m.WorldMap),
   {
@@ -18,10 +17,10 @@ const WorldMap = dynamic(
     loading: () => (
       <div
         aria-busy="true"
-        className="flex h-64 w-full items-center justify-center rounded-lg border border-neutral-200 bg-white"
+        className="flex h-64 w-full items-center justify-center rounded-3xl bg-white shadow-soft"
       >
         <div
-          className="h-5 w-5 animate-spin rounded-full border-2 border-neutral-300 border-t-neutral-600"
+          className="h-5 w-5 animate-spin rounded-full border-2 border-brand-200 border-t-brand-500"
           aria-hidden
         />
       </div>
@@ -35,6 +34,7 @@ interface ResultsViewProps {
   myOptionId: string;
   questionId: string;
   questionText: string;
+  celebrate?: boolean;
 }
 
 export function ResultsView({
@@ -43,8 +43,33 @@ export function ResultsView({
   myOptionId,
   questionId,
   questionText,
+  celebrate = false,
 }: ResultsViewProps) {
   const t = useTranslations();
+
+  useEffect(() => {
+    if (!celebrate) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const mod = await import("canvas-confetti");
+        if (cancelled) return;
+        const confetti = mod.default;
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.35 },
+          colors: ["#f97316", "#fb923c", "#fdba74", "#fde68a"],
+          disableForReducedMotion: true,
+        });
+      } catch {
+        // confetti 로드 실패해도 치명적이지 않음
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [celebrate]);
 
   const optionLabel = Object.fromEntries(options.map((o) => [o.id, o.text]));
   const myOptionText = optionLabel[myOptionId] ?? "";
@@ -53,13 +78,19 @@ export function ResultsView({
   const sortedOptions = [...options].sort((a, b) => a.sortOrder - b.sortOrder);
 
   return (
-    <div className="flex w-full flex-col gap-6">
+    <div className="flex w-full flex-col gap-5">
       <div
         role="status"
         aria-live="polite"
-        className="rounded-md border border-neutral-200 bg-neutral-50 px-4 py-3 text-center text-sm text-neutral-700"
+        className="flex items-center gap-3 rounded-2xl bg-brand-50 px-4 py-3 text-sm text-brand-900"
       >
-        {t("results.yourAnswer", { text: myOptionText })}
+        <span
+          aria-hidden
+          className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand-500 text-white"
+        >
+          <Check size={16} strokeWidth={3} />
+        </span>
+        <span className="font-medium">{t("results.yourAnswer", { text: myOptionText })}</span>
       </div>
 
       <GlobalBarChart
@@ -71,15 +102,10 @@ export function ResultsView({
 
       <WorldMap byCountry={results.byCountry} optionOrder={sortedOptions} />
 
-      <div className="flex items-center justify-center gap-3">
-        <ShareButton
-          questionId={questionId}
-          questionText={questionText}
-          optionId={myOptionId}
-        />
+      <div className="flex flex-col items-center gap-4 pt-2">
+        <ShareButton questionId={questionId} questionText={questionText} optionId={myOptionId} />
+        <CountdownBanner />
       </div>
-
-      <CountdownBanner />
     </div>
   );
 }

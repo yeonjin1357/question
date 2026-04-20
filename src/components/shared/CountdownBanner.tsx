@@ -1,5 +1,6 @@
 "use client";
 
+import { Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { formatHms, useCountdown } from "@/hooks/useCountdown";
@@ -8,12 +9,12 @@ export function CountdownBanner() {
   const t = useTranslations();
   const c = useCountdown();
 
-  // SSR/hydration 단계에선 자리만 잡고 마운트 후 시간 표시.
   const time = c ? formatHms(c) : "--:--:--";
 
   return (
-    <p className="text-center text-xs tabular-nums text-neutral-500">
-      {t("countdown.nextQuestionIn", { time })}
-    </p>
+    <div className="mx-auto inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs text-neutral-700 shadow-soft">
+      <Clock size={14} aria-hidden className="text-brand-500 animate-bounce-sm" />
+      <span className="tabular-nums">{t("countdown.nextQuestionIn", { time })}</span>
+    </div>
   );
 }
