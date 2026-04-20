@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { SearchBox } from "@/components/archive/SearchBox";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Chip } from "@/components/ui/Chip";
@@ -32,7 +33,7 @@ export default async function ArchiveListPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ category?: string; cursor?: string }>;
+  searchParams: Promise<{ category?: string; cursor?: string; q?: string }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -41,6 +42,8 @@ export default async function ArchiveListPage({
   const category = CATEGORIES.includes(sp.category as (typeof CATEGORIES)[number])
     ? sp.category
     : undefined;
+  const searchRaw = sp.q?.trim() ?? "";
+  const search = searchRaw.length >= 2 ? searchRaw : undefined;
 
   const t = await getTranslations();
   const page = await getArchive({
@@ -48,6 +51,7 @@ export default async function ArchiveListPage({
     cursor: sp.cursor,
     limit: 20,
     category,
+    search,
   });
 
   return (
@@ -64,6 +68,11 @@ export default async function ArchiveListPage({
         </p>
       </header>
 
+      <SearchBox
+        placeholder={t("archive.searchPlaceholder")}
+        clearLabel={t("archive.searchClear")}
+      />
+
       <nav aria-label="Category filter" className="flex flex-wrap gap-2">
         <CategoryChipLink locale={locale} current={category} value={undefined} label={t("archive.all")} />
         {CATEGORIES.map((c) => (
@@ -73,7 +82,16 @@ export default async function ArchiveListPage({
 
       {page.items.length === 0 ? (
         <Card variant="flat" padded className="text-center text-sm text-neutral-500 dark:text-neutral-400">
-          {t("archive.noItems")}
+          {search ? (
+            <>
+              <span aria-hidden className="mb-2 block text-3xl">
+                🔍
+              </span>
+              {t("archive.searchNoResults", { q: searchRaw })}
+            </>
+          ) : (
+            t("archive.noItems")
+          )}
         </Card>
       ) : (
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -120,7 +138,11 @@ export default async function ArchiveListPage({
           <Link
             href={{
               pathname: `/${locale}/archive`,
-              query: { ...(category ? { category } : {}), cursor: page.nextCursor },
+              query: {
+                ...(category ? { category } : {}),
+                ...(search ? { q: search } : {}),
+                cursor: page.nextCursor,
+              },
             }}
           >
             <Button variant="secondary" size="md">

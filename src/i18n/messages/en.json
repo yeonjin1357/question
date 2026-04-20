@@ -65,7 +65,10 @@
     "title": "Archive",
     "all": "All",
     "noItems": "No questions in this view yet.",
-    "topCountryPrefix": "top: {country}"
+    "topCountryPrefix": "top: {country}",
+    "searchPlaceholder": "Search past questions…",
+    "searchClear": "Clear search",
+    "searchNoResults": "No questions match \"{q}\"."
   },
   "suggest": {
     "title": "Suggest a question",

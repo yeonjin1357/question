@@ -65,7 +65,10 @@
     "title": "アーカイブ",
     "all": "すべて",
     "noItems": "この条件の質問はまだありません。",
-    "topCountryPrefix": "最多: {country}"
+    "topCountryPrefix": "最多: {country}",
+    "searchPlaceholder": "過去の質問を検索…",
+    "searchClear": "検索をクリア",
+    "searchNoResults": "「{q}」に一致する質問はありません。"
   },
   "suggest": {
     "title": "質問を提案",

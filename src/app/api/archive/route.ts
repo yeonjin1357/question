@@ -24,6 +24,7 @@ const querySchema = z.object({
     .max(32)
     .regex(/^[a-z_]+$/)
     .optional(),
+  search: z.string().min(1).max(100).optional(),
 });
 
 export async function GET(req: NextRequest) {
@@ -49,14 +50,19 @@ export async function GET(req: NextRequest) {
     cursor: parsed.data.cursor,
     limit: parsed.data.limit,
     category: parsed.data.category,
+    search: parsed.data.search,
   });
+
+  // 검색 결과는 사용자별로 다를 가능성이 적지만 키워드 조합이 다양해 공용 캐시 효율이 떨어짐.
+  // 검색어 있을 때는 짧은 private 캐시만.
+  const cacheControl = parsed.data.search
+    ? "private, max-age=30"
+    : "public, max-age=300, stale-while-revalidate=600";
 
   return NextResponse.json(
     { data: page },
     {
-      headers: {
-        "cache-control": "public, max-age=300, stale-while-revalidate=600",
-      },
+      headers: { "cache-control": cacheControl },
     },
   );
 }

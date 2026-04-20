@@ -24,10 +24,18 @@ export interface GetArchiveParams {
   /** 페이지 크기. 기본 20, 최대 50. */
   limit?: number;
   category?: string;
+  /** 키워드 검색. question_translations.text 의 ILIKE 부분일치. */
+  search?: string;
 }
 
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 50;
+const MIN_SEARCH_LENGTH = 2;
+
+/** LIKE 패턴용 wildcard 이스케이프. */
+function escapeLikePattern(raw: string): string {
+  return raw.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
 
 /**
  * 아카이브된 질문 목록 + 각 항목의 총 응답 수 / 최다 응답 국가.
@@ -40,6 +48,21 @@ export async function getArchive(params: GetArchiveParams): Promise<ArchivePage>
   const limit = Math.min(params.limit ?? DEFAULT_LIMIT, MAX_LIMIT);
   const db = createServerSupabase();
 
+  // 검색어가 있으면 question_translations 에서 1차로 hit 한 질문 id 를 추려서
+  // 이후 쿼리 IN 조건으로 쓴다. 로케일 제한은 두지 않음 — en 번역만 매치해도 노출.
+  let searchIds: string[] | null = null;
+  const searchTerm = params.search?.trim() ?? "";
+  if (searchTerm.length >= MIN_SEARCH_LENGTH) {
+    const pattern = `%${escapeLikePattern(searchTerm)}%`;
+    const { data: hits } = await db
+      .from("question_translations")
+      .select("question_id")
+      .ilike("text", pattern)
+      .limit(500);
+    searchIds = Array.from(new Set((hits ?? []).map((h) => h.question_id)));
+    if (searchIds.length === 0) return { items: [], nextCursor: null };
+  }
+
   let query = db
     .from("questions")
     .select("id, publish_date, category")
@@ -49,6 +72,7 @@ export async function getArchive(params: GetArchiveParams): Promise<ArchivePage>
 
   if (params.cursor) query = query.lt("publish_date", params.cursor);
   if (params.category) query = query.eq("category", params.category);
+  if (searchIds) query = query.in("id", searchIds);
 
   const { data: questionRows } = await query;
   const rows = questionRows ?? [];

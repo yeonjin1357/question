@@ -65,7 +65,10 @@
     "title": "아카이브",
     "all": "전체",
     "noItems": "아직 이 조건에 해당하는 질문이 없어요.",
-    "topCountryPrefix": "최다: {country}"
+    "topCountryPrefix": "최다: {country}",
+    "searchPlaceholder": "지난 질문 검색…",
+    "searchClear": "검색 지우기",
+    "searchNoResults": "\"{q}\"에 맞는 질문이 없어요."
   },
   "suggest": {
     "title": "질문 제안",

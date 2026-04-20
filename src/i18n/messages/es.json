@@ -65,7 +65,10 @@
     "title": "Archivo",
     "all": "Todas",
     "noItems": "Aún no hay preguntas en esta vista.",
-    "topCountryPrefix": "top: {country}"
+    "topCountryPrefix": "top: {country}",
+    "searchPlaceholder": "Buscar preguntas pasadas…",
+    "searchClear": "Borrar búsqueda",
+    "searchNoResults": "Ninguna pregunta coincide con «{q}»."
   },
   "suggest": {
     "title": "Sugerir una pregunta",
