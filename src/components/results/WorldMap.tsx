@@ -10,7 +10,7 @@ import { alpha2FromNumeric } from "@/lib/geo/iso3166";
 import { cn } from "@/lib/utils/cn";
 
 const GEO_URL = "/world-atlas/countries-110m.json";
-const MIN_COUNT_FOR_COLOR = 10;
+const MIN_COUNT_FOR_COLOR = 1;
 const NO_DATA_COLOR = "#e5e7eb";
 const HOVER_STROKE = "#111827";
 const MIN_ZOOM = 1;
