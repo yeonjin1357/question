@@ -26,21 +26,26 @@ export async function QuestionCard({ today, myResponse, initialResults }: Questi
           <Chip tone="accent" icon={<span>{emoji}</span>}>
             {today.question.category}
           </Chip>
-          <span className="ml-auto text-xs text-neutral-400">{today.question.publishDate}</span>
+          <span className="ml-auto text-xs text-neutral-400 dark:text-neutral-500">
+            {today.question.publishDate}
+          </span>
         </div>
 
-        <h1 className="text-balance font-display text-[28px] font-semibold leading-[1.15] tracking-tight sm:text-4xl">
+        <h1 className="text-balance font-display text-[28px] font-semibold leading-[1.15] tracking-tight text-neutral-900 dark:text-neutral-50 sm:text-4xl">
           {today.question.text}
         </h1>
 
         {today.isTranslationFallback ? (
-          <p className="text-xs text-neutral-500">{t("question.translationFallback")}</p>
+          <p className="text-xs text-neutral-500 dark:text-neutral-400">
+            {t("question.translationFallback")}
+          </p>
         ) : null}
       </header>
 
       <QuestionFlow
         questionId={today.question.id}
         questionText={today.question.text}
+        publishDate={today.question.publishDate}
         options={today.options}
         initialMyResponse={myResponse}
         initialResults={initialResults}

@@ -15,6 +15,7 @@ type Option = { id: string; sortOrder: number; text: string };
 interface QuestionFlowProps {
   questionId: string;
   questionText: string;
+  publishDate: string;
   options: Option[];
   initialMyResponse: { optionId: string } | null;
   initialResults: AggregateResult | null;
@@ -31,6 +32,7 @@ const LETTERS = ["A", "B", "C", "D", "E"];
 export function QuestionFlow({
   questionId,
   questionText,
+  publishDate,
   options,
   initialMyResponse,
   initialResults,
@@ -110,6 +112,7 @@ export function QuestionFlow({
           myOptionId={state.myOptionId}
           questionId={questionId}
           questionText={questionText}
+          publishDate={publishDate}
           celebrate={state.justAnswered}
         />
       </motion.div>
@@ -134,10 +137,10 @@ export function QuestionFlow({
                 whileTap={disabled ? undefined : { scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
                 className={cn(
-                  "flex w-full items-center gap-3 rounded-2xl border-2 bg-white px-4 py-3.5 text-left text-base transition-colors",
+                  "flex w-full items-center gap-3 rounded-2xl border-2 bg-white px-4 py-3.5 text-left text-base transition-colors dark:bg-neutral-900",
                   disabled
-                    ? "cursor-default border-neutral-200 opacity-70"
-                    : "border-neutral-200 hover:border-brand-400 hover:bg-brand-50",
+                    ? "cursor-default border-neutral-200 opacity-70 dark:border-neutral-800"
+                    : "border-neutral-200 hover:border-brand-400 hover:bg-brand-50 dark:border-neutral-800 dark:hover:border-brand-500 dark:hover:bg-brand-950/40",
                   isBusy && "!border-brand-500 !bg-brand-500 !text-white",
                 )}
               >
@@ -170,7 +173,7 @@ export function QuestionFlow({
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="rounded-2xl bg-red-50 px-4 py-3 text-center text-sm text-red-700"
+            className="rounded-2xl bg-red-50 px-4 py-3 text-center text-sm text-red-700 dark:bg-red-950/40 dark:text-red-300"
           >
             {state.message}
           </motion.p>

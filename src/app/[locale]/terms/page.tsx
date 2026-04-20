@@ -45,7 +45,7 @@ export default async function TermsPage({
         </p>
       </header>
 
-      <section className="flex flex-col gap-4 text-sm leading-relaxed text-neutral-800">
+      <section className="flex flex-col gap-4 text-sm leading-relaxed text-neutral-800 dark:text-neutral-300">
         <p>
           The English text below is the authoritative version; translations are informational.
         </p>

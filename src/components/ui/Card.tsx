@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils/cn";
 type Variant = "elevated" | "flat" | "soft";
 
 const VARIANTS: Record<Variant, string> = {
-  elevated: "bg-white shadow-soft",
-  flat: "bg-white border border-neutral-200",
-  soft: "bg-brand-50",
+  elevated:
+    "bg-white shadow-soft dark:bg-neutral-900 dark:shadow-[0_4px_20px_-4px_rgb(0_0_0/0.5)]",
+  flat: "bg-white border border-neutral-200 dark:bg-neutral-900 dark:border-neutral-800",
+  soft: "bg-brand-50 dark:bg-brand-950/40",
 };
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {

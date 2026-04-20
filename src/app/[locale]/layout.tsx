@@ -53,6 +53,19 @@ export const metadata: Metadata = {
     title: "One Question a Day",
     description: DEFAULT_DESCRIPTION,
   },
+  applicationName: "OneQ",
+  appleWebApp: {
+    capable: true,
+    title: "OneQ",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f97316" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
 };
 
 export function generateStaticParams() {
@@ -77,7 +90,7 @@ export default async function LocaleLayout({
         <PlausibleScript />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} bg-gradient-to-b from-brand-50 via-white to-white antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} bg-gradient-to-b from-brand-50 via-white to-white text-neutral-900 antialiased dark:from-neutral-950 dark:via-neutral-950 dark:to-black dark:text-neutral-100`}
       >
         <a
           href="#main-content"

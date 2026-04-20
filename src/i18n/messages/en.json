@@ -31,6 +31,10 @@
   "countdown": {
     "nextQuestionIn": "Next question in {time}"
   },
+  "streak": {
+    "daysInARow": "{count}-day streak",
+    "milestone": "{count} days in a row! 🎉"
+  },
   "archive": {
     "title": "Archive",
     "all": "All",

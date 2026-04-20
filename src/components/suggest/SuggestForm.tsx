@@ -24,7 +24,7 @@ type Status =
   | { kind: "error"; message: string };
 
 const INPUT_CLASS =
-  "w-full rounded-2xl border-2 border-neutral-200 bg-white px-4 py-3 text-base transition-colors focus:border-brand-400 focus:outline-none";
+  "w-full rounded-2xl border-2 border-neutral-200 bg-white px-4 py-3 text-base transition-colors focus:border-brand-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-brand-500";
 
 export function SuggestForm({ locale }: SuggestFormProps) {
   const t = useTranslations();
@@ -126,7 +126,7 @@ export function SuggestForm({ locale }: SuggestFormProps) {
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
           {t("suggest.title")}
         </h1>
-        <p className="text-sm text-neutral-600">{t("suggest.description")}</p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">{t("suggest.description")}</p>
       </header>
 
       <AnimatePresence>
@@ -147,7 +147,7 @@ export function SuggestForm({ locale }: SuggestFormProps) {
       <Card variant="elevated" padded>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-neutral-700">
+            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
               {t("suggest.questionLabel")}
             </span>
             <textarea
@@ -166,7 +166,7 @@ export function SuggestForm({ locale }: SuggestFormProps) {
           </label>
 
           <fieldset className="flex flex-col gap-3">
-            <legend className="text-sm font-medium text-neutral-700">
+            <legend className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
               {t("suggest_form.optionsLegend")}
             </legend>
             {options.map((o, i) => (
@@ -208,7 +208,7 @@ export function SuggestForm({ locale }: SuggestFormProps) {
           </fieldset>
 
           <label className="flex flex-col gap-1.5">
-            <span className="text-sm font-medium text-neutral-700">
+            <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
               {t("suggest.emailLabel")}
             </span>
             <input

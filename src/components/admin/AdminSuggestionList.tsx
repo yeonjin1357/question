@@ -28,7 +28,7 @@ function nextPublishDate(offsetDays: number): string {
 }
 
 const INPUT =
-  "rounded-xl border-2 border-neutral-200 bg-white px-3 py-1.5 text-sm focus:border-brand-400 focus:outline-none";
+  "rounded-xl border-2 border-neutral-200 bg-white px-3 py-1.5 text-sm focus:border-brand-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:focus:border-brand-500";
 
 export function AdminSuggestionList({ items }: AdminSuggestionListProps) {
   const router = useRouter();
@@ -77,7 +77,7 @@ export function AdminSuggestionList({ items }: AdminSuggestionListProps) {
 
   if (items.length === 0) {
     return (
-      <Card variant="flat" padded className="text-center text-sm text-neutral-500">
+      <Card variant="flat" padded className="text-center text-sm text-neutral-500 dark:text-neutral-400">
         Empty.
       </Card>
     );
@@ -95,7 +95,7 @@ export function AdminSuggestionList({ items }: AdminSuggestionListProps) {
               <div className="flex flex-col gap-3">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="flex flex-1 flex-col gap-2">
-                    <div className="flex items-center gap-2 text-xs text-neutral-500">
+                    <div className="flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                       <time>{new Date(item.createdAt).toISOString().slice(0, 16)}</time>
                       <Chip tone="accent">{item.locale}</Chip>
                       {item.submitterEmail ? (
@@ -107,7 +107,7 @@ export function AdminSuggestionList({ items }: AdminSuggestionListProps) {
                       {item.options.map((o, i) => (
                         <li
                           key={i}
-                          className="rounded-full bg-neutral-50 px-2.5 py-1 text-xs text-neutral-700"
+                          className="rounded-full bg-neutral-50 px-2.5 py-1 text-xs text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300"
                         >
                           {o.text}
                         </li>
@@ -163,7 +163,7 @@ export function AdminSuggestionList({ items }: AdminSuggestionListProps) {
                       e.preventDefault();
                       void approve(item);
                     }}
-                    className="flex flex-wrap items-end gap-3 rounded-2xl bg-brand-50 p-4"
+                    className="flex flex-wrap items-end gap-3 rounded-2xl bg-brand-50 p-4 dark:bg-brand-950/40"
                   >
                     <label className="flex flex-col gap-1 text-xs">
                       Publish date

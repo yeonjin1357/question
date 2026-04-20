@@ -64,7 +64,7 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
   return (
     <section
       aria-label="World map of responses"
-      className="relative flex w-full flex-col gap-4 rounded-3xl bg-white p-5 shadow-soft sm:p-6"
+      className="relative flex w-full flex-col gap-4 rounded-3xl bg-white p-5 shadow-soft dark:bg-neutral-900 sm:p-6"
     >
       <header className="flex flex-wrap items-baseline justify-between gap-3">
         <h2 className="font-display text-base font-semibold">{t("results.world")}</h2>
@@ -138,14 +138,16 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
           <div
             role="tooltip"
             className={cn(
-              "pointer-events-none fixed z-50 rounded-2xl bg-white px-3 py-2",
+              "pointer-events-none fixed z-50 rounded-2xl bg-white px-3 py-2 dark:bg-neutral-900",
               "text-xs shadow-pop",
             )}
             style={{ left: tooltip.x + 12, top: tooltip.y + 12 }}
           >
-            <div className="mb-0.5 font-display text-sm font-semibold">{tooltip.country}</div>
+            <div className="mb-0.5 font-display text-sm font-semibold dark:text-neutral-100">
+              {tooltip.country}
+            </div>
             {tooltip.lines.map((line, i) => (
-              <div key={i} className="text-neutral-600 tabular-nums">
+              <div key={i} className="text-neutral-600 tabular-nums dark:text-neutral-400">
                 {line}
               </div>
             ))}
@@ -158,11 +160,11 @@ export function WorldMap({ byCountry, optionOrder }: WorldMapProps) {
 
 function Legend({ options }: { options: Array<{ id: string; text: string }> }) {
   return (
-    <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-600">
+    <div className="flex flex-wrap items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400">
       {options.map((o, i) => (
         <span
           key={o.id}
-          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-50 px-2.5 py-1"
+          className="inline-flex items-center gap-1.5 rounded-full bg-neutral-50 px-2.5 py-1 dark:bg-neutral-800"
         >
           <span
             className="inline-block h-2.5 w-2.5 rounded-full"

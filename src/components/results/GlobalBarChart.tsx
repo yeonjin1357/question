@@ -37,7 +37,7 @@ export function GlobalBarChart({
   return (
     <section
       aria-label="Global results"
-      className="flex w-full flex-col gap-4 rounded-3xl bg-white p-5 shadow-soft sm:p-6"
+      className="flex w-full flex-col gap-4 rounded-3xl bg-white p-5 shadow-soft dark:bg-neutral-900 sm:p-6"
     >
       <header className="flex items-end justify-between">
         <h2 className="font-display text-base font-semibold">{t("results.global")}</h2>
@@ -52,7 +52,9 @@ export function GlobalBarChart({
       </header>
 
       {rows.length === 0 ? (
-        <p className="py-8 text-center text-sm text-neutral-500">{t("results.noDataYet")}</p>
+        <p className="py-8 text-center text-sm text-neutral-500 dark:text-neutral-400">
+          {t("results.noDataYet")}
+        </p>
       ) : (
         <ul className="flex flex-col gap-3">
           {rows.map((r) => {
@@ -66,7 +68,9 @@ export function GlobalBarChart({
                       <span
                         className={cn(
                           "truncate text-sm",
-                          isMine ? "font-semibold text-brand-700" : "text-neutral-800",
+                          isMine
+                            ? "font-semibold text-brand-700 dark:text-brand-300"
+                            : "text-neutral-800 dark:text-neutral-200",
                         )}
                       >
                         {r.label}
@@ -74,14 +78,16 @@ export function GlobalBarChart({
                       <span
                         className={cn(
                           "whitespace-nowrap font-display text-base font-semibold tabular-nums",
-                          isMine ? "text-brand-600" : "text-neutral-600",
+                          isMine
+                            ? "text-brand-600 dark:text-brand-400"
+                            : "text-neutral-600 dark:text-neutral-400",
                         )}
                       >
                         {r.percent}%
                       </span>
                     </div>
                     <div
-                      className="relative h-2.5 w-full overflow-hidden rounded-full bg-neutral-100"
+                      className="relative h-2.5 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800"
                       aria-hidden
                     >
                       <div
@@ -89,7 +95,7 @@ export function GlobalBarChart({
                           "absolute inset-y-0 left-0 rounded-full transition-all duration-500",
                           isMine
                             ? "bg-gradient-to-r from-brand-400 to-brand-500"
-                            : "bg-neutral-300",
+                            : "bg-neutral-300 dark:bg-neutral-600",
                         )}
                         style={{ width: `${Math.max(r.percent, 2)}%` }}
                       />

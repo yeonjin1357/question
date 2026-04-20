@@ -20,7 +20,7 @@ export default async function LocaleNotFound() {
       <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
         {t("error.notFoundTitle")}
       </h1>
-      <p className="max-w-md text-base text-neutral-600">{t("error.notFoundBody")}</p>
+      <p className="max-w-md text-base text-neutral-600 dark:text-neutral-400">{t("error.notFoundBody")}</p>
       <Link href={`/${locale}`}>
         <Button variant="primary" size="lg">
           {t("cta.backToHome")}

@@ -11,7 +11,9 @@ export function Badge({ tone = "neutral", className, children, ...rest }: BadgeP
     <span
       className={cn(
         "inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold font-display",
-        tone === "brand" ? "bg-brand-500 text-white" : "bg-neutral-100 text-neutral-600",
+        tone === "brand"
+          ? "bg-brand-500 text-white"
+          : "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300",
         className,
       )}
       {...rest}

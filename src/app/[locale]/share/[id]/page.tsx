@@ -103,13 +103,13 @@ export default async function SharePage({
           </Chip>
           <time
             dateTime={question.question.publishDate}
-            className="ml-auto text-xs text-neutral-400 tabular-nums"
+            className="ml-auto text-xs text-neutral-400 tabular-nums dark:text-neutral-500"
           >
             {question.question.publishDate}
           </time>
         </header>
 
-        <h1 className="text-balance font-display text-3xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">
+        <h1 className="text-balance font-display text-3xl font-semibold leading-[1.15] tracking-tight text-neutral-900 dark:text-neutral-50 sm:text-4xl">
           {question.question.text}
         </h1>
 
@@ -128,7 +128,9 @@ export default async function SharePage({
                     <span
                       className={cn(
                         "text-sm",
-                        isHighlight ? "font-semibold text-brand-700" : "text-neutral-800",
+                        isHighlight
+                          ? "font-semibold text-brand-700 dark:text-brand-300"
+                          : "text-neutral-800 dark:text-neutral-200",
                       )}
                     >
                       {o.text}
@@ -136,14 +138,16 @@ export default async function SharePage({
                     <span
                       className={cn(
                         "whitespace-nowrap font-display text-base font-semibold tabular-nums",
-                        isHighlight ? "text-brand-600" : "text-neutral-600",
+                        isHighlight
+                          ? "text-brand-600 dark:text-brand-400"
+                          : "text-neutral-600 dark:text-neutral-400",
                       )}
                     >
                       {pct}%
                     </span>
                   </div>
                   <div
-                    className="relative h-2.5 w-full overflow-hidden rounded-full bg-neutral-100"
+                    className="relative h-2.5 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800"
                     aria-hidden
                   >
                     <div
@@ -151,7 +155,7 @@ export default async function SharePage({
                         "absolute inset-y-0 left-0 rounded-full transition-all duration-500",
                         isHighlight
                           ? "bg-gradient-to-r from-brand-400 to-brand-500"
-                          : "bg-neutral-300",
+                          : "bg-neutral-300 dark:bg-neutral-600",
                       )}
                       style={{ width: `${Math.max(pct, 2)}%` }}
                     />
@@ -162,7 +166,7 @@ export default async function SharePage({
           })}
         </ul>
 
-        <p className="text-center text-xs text-neutral-500">
+        <p className="text-center text-xs text-neutral-500 dark:text-neutral-400">
           {t("results.totalParticipants", { count: totalVotes })}
           {highlightCountry ? ` · ${highlightCountry}` : null}
         </p>

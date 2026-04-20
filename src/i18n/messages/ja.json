@@ -31,6 +31,10 @@
   "countdown": {
     "nextQuestionIn": "次の質問まで {time}"
   },
+  "streak": {
+    "daysInARow": "{count}日連続",
+    "milestone": "{count}日連続達成！🎉"
+  },
   "archive": {
     "title": "アーカイブ",
     "all": "すべて",

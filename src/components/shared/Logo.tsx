@@ -16,7 +16,7 @@ export function Logo({ className }: { className?: string }) {
       >
         <Globe2 size={18} strokeWidth={2.5} />
       </span>
-      <span className="text-neutral-900">
+      <span className="text-neutral-900 dark:text-neutral-100">
         OneQ<span className="text-brand-500">.</span>
       </span>
     </span>

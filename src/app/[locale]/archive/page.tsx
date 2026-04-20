@@ -59,7 +59,9 @@ export default async function ArchiveListPage({
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
           {t("archive.title")}
         </h1>
-        <p className="text-sm text-neutral-600">🗂️ Every question, every day.</p>
+        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+          🗂️ Every question, every day.
+        </p>
       </header>
 
       <nav aria-label="Category filter" className="flex flex-wrap gap-2">
@@ -70,7 +72,7 @@ export default async function ArchiveListPage({
       </nav>
 
       {page.items.length === 0 ? (
-        <Card variant="flat" padded className="text-center text-sm text-neutral-500">
+        <Card variant="flat" padded className="text-center text-sm text-neutral-500 dark:text-neutral-400">
           {t("archive.noItems")}
         </Card>
       ) : (
@@ -79,7 +81,7 @@ export default async function ArchiveListPage({
             <li key={item.id}>
               <Link
                 href={`/${locale}/archive/${item.publishDate}`}
-                className="group block h-full rounded-3xl bg-white p-5 shadow-soft transition-all hover:shadow-pop"
+                className="group block h-full rounded-3xl bg-white p-5 shadow-soft transition-all hover:shadow-pop dark:bg-neutral-900"
               >
                 <div className="mb-3 flex items-center gap-2">
                   <span aria-hidden className="text-xl">
@@ -88,15 +90,15 @@ export default async function ArchiveListPage({
                   <Chip tone="accent">{item.category}</Chip>
                   <time
                     dateTime={item.publishDate}
-                    className="ml-auto text-xs text-neutral-400 tabular-nums"
+                    className="ml-auto text-xs text-neutral-400 tabular-nums dark:text-neutral-500"
                   >
                     {item.publishDate}
                   </time>
                 </div>
-                <p className="font-display text-lg font-medium leading-snug text-neutral-900 group-hover:text-brand-700">
+                <p className="font-display text-lg font-medium leading-snug text-neutral-900 group-hover:text-brand-700 dark:text-neutral-100 dark:group-hover:text-brand-400">
                   {item.text}
                 </p>
-                <div className="mt-4 flex items-center gap-2 text-xs text-neutral-500">
+                <div className="mt-4 flex items-center gap-2 text-xs text-neutral-500 dark:text-neutral-400">
                   <span className="tabular-nums">
                     {t("results.totalParticipants", { count: item.totalResponses })}
                   </span>

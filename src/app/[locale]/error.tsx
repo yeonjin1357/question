@@ -30,7 +30,7 @@ export default function LocaleError({
       <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
         {t("pageTitle")}
       </h1>
-      <p className="max-w-md text-base text-neutral-600">{t("pageBody")}</p>
+      <p className="max-w-md text-base text-neutral-600 dark:text-neutral-400">{t("pageBody")}</p>
       <Button onClick={reset} variant="primary" size="lg">
         {t("retry")}
       </Button>

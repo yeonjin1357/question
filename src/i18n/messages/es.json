@@ -31,6 +31,10 @@
   "countdown": {
     "nextQuestionIn": "Próxima pregunta en {time}"
   },
+  "streak": {
+    "daysInARow": "{count} días seguidos",
+    "milestone": "¡{count} días seguidos! 🎉"
+  },
   "archive": {
     "title": "Archivo",
     "all": "Todas",

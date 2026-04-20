@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { GlobalBarChart } from "@/components/results/GlobalBarChart";
 import { CountdownBanner } from "@/components/shared/CountdownBanner";
 import { ShareButton } from "@/components/shared/ShareButton";
+import { StreakChip } from "@/components/shared/StreakChip";
 import type { AggregateResult } from "@/lib/db/queries/results";
 
 const WorldMap = dynamic(
@@ -17,7 +18,7 @@ const WorldMap = dynamic(
     loading: () => (
       <div
         aria-busy="true"
-        className="flex h-64 w-full items-center justify-center rounded-3xl bg-white shadow-soft"
+        className="flex h-64 w-full items-center justify-center rounded-3xl bg-white shadow-soft dark:bg-neutral-900"
       >
         <div
           className="h-5 w-5 animate-spin rounded-full border-2 border-brand-200 border-t-brand-500"
@@ -34,6 +35,7 @@ interface ResultsViewProps {
   myOptionId: string;
   questionId: string;
   questionText: string;
+  publishDate: string;
   celebrate?: boolean;
 }
 
@@ -43,6 +45,7 @@ export function ResultsView({
   myOptionId,
   questionId,
   questionText,
+  publishDate,
   celebrate = false,
 }: ResultsViewProps) {
   const t = useTranslations();
@@ -79,18 +82,22 @@ export function ResultsView({
 
   return (
     <div className="flex w-full flex-col gap-5">
-      <div
-        role="status"
-        aria-live="polite"
-        className="flex items-center gap-3 rounded-2xl bg-brand-50 px-4 py-3 text-sm text-brand-900"
-      >
-        <span
-          aria-hidden
-          className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand-500 text-white"
+      <div className="flex flex-col gap-3">
+        <div
+          role="status"
+          aria-live="polite"
+          className="flex items-center gap-3 rounded-2xl bg-brand-50 px-4 py-3 text-sm text-brand-900 dark:bg-brand-950/40 dark:text-brand-200"
         >
-          <Check size={16} strokeWidth={3} />
-        </span>
-        <span className="font-medium">{t("results.yourAnswer", { text: myOptionText })}</span>
+          <span
+            aria-hidden
+            className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand-500 text-white"
+          >
+            <Check size={16} strokeWidth={3} />
+          </span>
+          <span className="font-medium">{t("results.yourAnswer", { text: myOptionText })}</span>
+        </div>
+
+        <StreakChip publishDate={publishDate} />
       </div>
 
       <GlobalBarChart

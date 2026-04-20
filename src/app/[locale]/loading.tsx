@@ -13,7 +13,7 @@ export default async function LocaleLoading() {
         className="h-8 w-8 animate-spin rounded-full border-[3px] border-brand-200 border-t-brand-500"
         aria-hidden
       />
-      <p className="text-sm text-neutral-500">{t("loading")}</p>
+      <p className="text-sm text-neutral-500 dark:text-neutral-400">{t("loading")}</p>
     </main>
   );
 }

@@ -9,10 +9,12 @@ const BASE =
   "inline-flex items-center justify-center gap-2 font-medium transition-all disabled:cursor-not-allowed disabled:opacity-60";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-brand-500 text-white shadow-soft hover:bg-brand-600 hover:shadow-pop active:scale-[0.98]",
+  primary:
+    "bg-brand-500 text-white shadow-soft hover:bg-brand-600 hover:shadow-pop active:scale-[0.98] dark:bg-brand-500 dark:hover:bg-brand-400",
   secondary:
-    "bg-white text-neutral-900 border-2 border-neutral-200 hover:border-brand-300 hover:bg-brand-50 active:scale-[0.98]",
-  ghost: "bg-transparent text-neutral-700 hover:bg-neutral-100 active:scale-[0.98]",
+    "bg-white text-neutral-900 border-2 border-neutral-200 hover:border-brand-300 hover:bg-brand-50 active:scale-[0.98] dark:bg-neutral-900 dark:text-neutral-100 dark:border-neutral-700 dark:hover:border-brand-400 dark:hover:bg-brand-950/40",
+  ghost:
+    "bg-transparent text-neutral-700 hover:bg-neutral-100 active:scale-[0.98] dark:text-neutral-200 dark:hover:bg-neutral-800",
 };
 
 const SIZES: Record<Size, string> = {

@@ -52,7 +52,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <h1 className="font-display text-3xl font-semibold tracking-tight sm:text-4xl">
           {t("app.title")}
         </h1>
-        <p className="max-w-md text-base text-neutral-600">{t("question.noQuestionToday")}</p>
+        <p className="max-w-md text-base text-neutral-600 dark:text-neutral-400">
+          {t("question.noQuestionToday")}
+        </p>
       </main>
     );
   }

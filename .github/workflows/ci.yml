@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Typecheck · Lint · Test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    env:
+      # env.ts 런타임 검증용 더미값. 실제 서비스 호출 없음.
+      NEXT_PUBLIC_SUPABASE_URL: https://stub.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-stub-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: ci-stub-service-role-key
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      SESSION_HASH_SECRET: ci-stub-secret-at-least-32-characters-long
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: i18n check
+        run: npm run i18n:check
+
+      - name: Test
+        run: npm run test
+
+      - name: Build (smoke)
+        run: npm run build

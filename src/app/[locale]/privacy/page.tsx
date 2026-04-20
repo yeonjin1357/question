@@ -45,7 +45,7 @@ export default async function PrivacyPage({
         </p>
       </header>
 
-      <section className="flex flex-col gap-4 text-sm leading-relaxed text-neutral-800">
+      <section className="flex flex-col gap-4 text-sm leading-relaxed text-neutral-800 dark:text-neutral-300">
         <p>
           One Question a Day (&ldquo;we&rdquo;, &ldquo;our&rdquo;) collects the minimum data
           needed to run a global daily micro-survey. The English text below is the

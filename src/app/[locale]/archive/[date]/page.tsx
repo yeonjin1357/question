@@ -85,7 +85,7 @@ export default async function ArchiveDetailPage({
     >
       <Link
         href={`/${locale}/archive`}
-        className="inline-flex w-fit items-center gap-1 text-xs text-neutral-500 hover:text-brand-600"
+        className="inline-flex w-fit items-center gap-1 text-xs text-neutral-500 hover:text-brand-600 dark:text-neutral-400 dark:hover:text-brand-400"
       >
         {t("cta.backToArchive")}
       </Link>
@@ -97,13 +97,13 @@ export default async function ArchiveDetailPage({
           </Chip>
           <time
             dateTime={question.question.publishDate}
-            className="ml-auto text-xs text-neutral-400 tabular-nums"
+            className="ml-auto text-xs text-neutral-400 tabular-nums dark:text-neutral-500"
           >
             {question.question.publishDate}
           </time>
         </header>
 
-        <h1 className="text-balance font-display text-3xl font-semibold leading-[1.15] tracking-tight sm:text-4xl">
+        <h1 className="text-balance font-display text-3xl font-semibold leading-[1.15] tracking-tight text-neutral-900 dark:text-neutral-50 sm:text-4xl">
           {question.question.text}
         </h1>
 
@@ -116,18 +116,18 @@ export default async function ArchiveDetailPage({
                 <Badge tone="neutral">{LETTERS[idx] ?? String(idx + 1)}</Badge>
                 <div className="flex-1">
                   <div className="mb-1 flex items-baseline justify-between gap-3">
-                    <span className="text-sm text-neutral-800">{o.text}</span>
-                    <span className="font-display text-base font-semibold tabular-nums text-neutral-600">
+                    <span className="text-sm text-neutral-800 dark:text-neutral-200">{o.text}</span>
+                    <span className="font-display text-base font-semibold tabular-nums text-neutral-600 dark:text-neutral-400">
                       {pct}%
                     </span>
                   </div>
                   <div
-                    className="relative h-2.5 w-full overflow-hidden rounded-full bg-neutral-100"
+                    className="relative h-2.5 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800"
                     aria-hidden
                   >
                     <div
                       className={cn(
-                        "absolute inset-y-0 left-0 rounded-full bg-neutral-300 transition-all duration-500",
+                        "absolute inset-y-0 left-0 rounded-full bg-neutral-300 transition-all duration-500 dark:bg-neutral-600",
                       )}
                       style={{ width: `${Math.max(pct, 2)}%` }}
                     />
@@ -138,7 +138,7 @@ export default async function ArchiveDetailPage({
           })}
         </ul>
 
-        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-100 pt-4 text-xs text-neutral-500">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-100 pt-4 text-xs text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
           <span>
             {t("results.totalParticipants", { count: totalVotes })}
             {topCountry

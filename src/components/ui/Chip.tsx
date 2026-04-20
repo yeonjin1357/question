@@ -10,15 +10,15 @@ const BASE =
 const TONES = {
   brand: {
     active: "bg-brand-500 text-white",
-    idle: "bg-brand-50 text-brand-700 hover:bg-brand-100",
+    idle: "bg-brand-50 text-brand-700 hover:bg-brand-100 dark:bg-brand-950/40 dark:text-brand-300 dark:hover:bg-brand-900/40",
   },
   neutral: {
-    active: "bg-neutral-900 text-white",
-    idle: "bg-neutral-100 text-neutral-700 hover:bg-neutral-200",
+    active: "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900",
+    idle: "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700",
   },
   accent: {
     active: "bg-accent-blue text-neutral-900",
-    idle: "bg-neutral-50 text-neutral-600 hover:bg-neutral-100",
+    idle: "bg-neutral-50 text-neutral-600 hover:bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700",
   },
 } as const;
 
