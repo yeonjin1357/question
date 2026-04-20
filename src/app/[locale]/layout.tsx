@@ -12,6 +12,7 @@ import { CookieNotice } from "@/components/shared/CookieNotice";
 import { Footer } from "@/components/shared/Footer";
 import { Header } from "@/components/shared/Header";
 import { PlausibleScript } from "@/components/shared/PlausibleScript";
+import { ThemeScript } from "@/components/shared/ThemeScript";
 import { routing } from "@/i18n/routing";
 import { env } from "@/lib/env";
 
@@ -87,6 +88,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <head>
+        <ThemeScript />
         <PlausibleScript />
       </head>
       <body

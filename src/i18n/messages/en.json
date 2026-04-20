@@ -31,6 +31,12 @@
   "countdown": {
     "nextQuestionIn": "Next question in {time}"
   },
+  "map": {
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "reset": "Reset view",
+    "hint": "Drag to pan · scroll to zoom"
+  },
   "streak": {
     "daysInARow": "{count}-day streak",
     "milestone": "{count} days in a row! 🎉"
@@ -55,7 +61,8 @@
     "errorSpam": "That doesn't look like a question we can use."
   },
   "a11y": {
-    "skipToMain": "Skip to main content"
+    "skipToMain": "Skip to main content",
+    "toggleTheme": "Toggle theme"
   },
   "legal": {
     "privacy": "Privacy",

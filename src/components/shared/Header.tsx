@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 
 import { Logo } from "@/components/shared/Logo";
+import { ThemeToggle } from "@/components/shared/ThemeToggle";
 
 export async function Header({ locale }: { locale: string }) {
   const t = await getTranslations();
@@ -24,6 +25,7 @@ export async function Header({ locale }: { locale: string }) {
           >
             {t("suggest.title")}
           </Link>
+          <ThemeToggle label={t("a11y.toggleTheme")} />
         </nav>
       </div>
     </header>

@@ -31,6 +31,12 @@
   "countdown": {
     "nextQuestionIn": "Próxima pregunta en {time}"
   },
+  "map": {
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar",
+    "reset": "Restablecer",
+    "hint": "Arrastra para mover · desplaza para acercar"
+  },
   "streak": {
     "daysInARow": "{count} días seguidos",
     "milestone": "¡{count} días seguidos! 🎉"
@@ -55,7 +61,8 @@
     "errorSpam": "No parece una pregunta que podamos usar."
   },
   "a11y": {
-    "skipToMain": "Saltar al contenido principal"
+    "skipToMain": "Saltar al contenido principal",
+    "toggleTheme": "Cambiar tema"
   },
   "legal": {
     "privacy": "Privacidad",

@@ -31,6 +31,12 @@
   "countdown": {
     "nextQuestionIn": "次の質問まで {time}"
   },
+  "map": {
+    "zoomIn": "拡大",
+    "zoomOut": "縮小",
+    "reset": "リセット",
+    "hint": "ドラッグで移動 · スクロールで拡大"
+  },
   "streak": {
     "daysInARow": "{count}日連続",
     "milestone": "{count}日連続達成！🎉"
@@ -55,7 +61,8 @@
     "errorSpam": "この内容は掲載できません。"
   },
   "a11y": {
-    "skipToMain": "本文へスキップ"
+    "skipToMain": "本文へスキップ",
+    "toggleTheme": "テーマ切り替え"
   },
   "legal": {
     "privacy": "プライバシー",
