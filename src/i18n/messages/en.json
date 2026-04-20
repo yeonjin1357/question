@@ -6,9 +6,27 @@
   "home": {
     "todaysQuestion": "Today's question"
   },
+  "about": {
+    "title": "One Question a Day",
+    "subtitle": "One question. One day. The whole world answers.",
+    "howItWorksTitle": "How it works",
+    "step1Title": "A fresh question every UTC 00:00",
+    "step1Body": "A single question publishes each day at midnight UTC. No feed, no doomscroll — just today's.",
+    "step2Title": "Answer in 10 seconds",
+    "step2Body": "Pick one of the options. You only get one answer per day, and your choice is anonymous.",
+    "step3Title": "See the world's answer",
+    "step3Body": "Right after you answer, the results appear on a world map — country by country.",
+    "privacyTitle": "Privacy first, always",
+    "privacyBody": "No accounts. Only one strictly-necessary cookie. Your IP is never stored — only a hash salted with a key that rotates daily. No ads, no third-party tracking.",
+    "languagesTitle": "Speaks your language",
+    "languagesBody": "Available in English, Korean, Japanese and Spanish. We're adding more.",
+    "cta": "Answer today's question",
+    "navLabel": "About"
+  },
   "question": {
     "noQuestionToday": "No question today — please check back soon.",
-    "translationFallback": "Translation not available in your language. Showing English."
+    "translationFallback": "Translation not available in your language. Showing English.",
+    "keyboardHint": "Tip: press 1–{max} to pick an option"
   },
   "cta": {
     "answer": "Answer",

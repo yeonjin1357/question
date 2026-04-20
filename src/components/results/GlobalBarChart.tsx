@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/Badge";
 import type { OptionAggregate } from "@/lib/db/queries/results";
+import { optionEmoji } from "@/lib/ui/option-emoji";
 import { cn } from "@/lib/utils/cn";
 
 interface GlobalBarChartProps {
@@ -32,6 +33,7 @@ export function GlobalBarChart({
     percent: row.percent,
     count: row.count,
     letter: LETTERS[idx] ?? String(idx + 1),
+    emoji: optionEmoji(row.optionId),
   }));
 
   return (
@@ -67,13 +69,18 @@ export function GlobalBarChart({
                     <div className="mb-1 flex items-baseline justify-between gap-3">
                       <span
                         className={cn(
-                          "truncate text-sm",
+                          "flex items-center gap-1.5 truncate text-sm",
                           isMine
                             ? "font-semibold text-brand-700 dark:text-brand-300"
                             : "text-neutral-800 dark:text-neutral-200",
                         )}
                       >
-                        {r.label}
+                        {r.emoji ? (
+                          <span aria-hidden className="text-base leading-none">
+                            {r.emoji}
+                          </span>
+                        ) : null}
+                        <span className="truncate">{r.label}</span>
                       </span>
                       <span
                         className={cn(

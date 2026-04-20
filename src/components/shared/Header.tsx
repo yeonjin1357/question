@@ -15,15 +15,21 @@ export async function Header({ locale }: { locale: string }) {
         <nav className="flex items-center gap-1 text-sm">
           <Link
             href={`/${locale}/archive`}
-            className="rounded-full px-3 py-1.5 text-neutral-700 transition-colors hover:bg-brand-50 hover:text-brand-700 dark:text-neutral-300 dark:hover:bg-brand-950/40 dark:hover:text-brand-300"
+            className="hidden rounded-full px-3 py-1.5 text-neutral-700 transition-colors hover:bg-brand-50 hover:text-brand-700 dark:text-neutral-300 dark:hover:bg-brand-950/40 dark:hover:text-brand-300 sm:block"
           >
             {t("archive.title")}
           </Link>
           <Link
             href={`/${locale}/suggest`}
-            className="rounded-full px-3 py-1.5 text-neutral-700 transition-colors hover:bg-brand-50 hover:text-brand-700 dark:text-neutral-300 dark:hover:bg-brand-950/40 dark:hover:text-brand-300"
+            className="hidden rounded-full px-3 py-1.5 text-neutral-700 transition-colors hover:bg-brand-50 hover:text-brand-700 dark:text-neutral-300 dark:hover:bg-brand-950/40 dark:hover:text-brand-300 sm:block"
           >
             {t("suggest.title")}
+          </Link>
+          <Link
+            href={`/${locale}/about`}
+            className="rounded-full px-3 py-1.5 text-neutral-700 transition-colors hover:bg-brand-50 hover:text-brand-700 dark:text-neutral-300 dark:hover:bg-brand-950/40 dark:hover:text-brand-300"
+          >
+            {t("about.navLabel")}
           </Link>
           <ThemeToggle label={t("a11y.toggleTheme")} />
         </nav>

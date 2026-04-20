@@ -6,9 +6,27 @@
   "home": {
     "todaysQuestion": "오늘의 질문"
   },
+  "about": {
+    "title": "하루 한 질문",
+    "subtitle": "하루에 하나의 질문. 전 세계가 답합니다.",
+    "howItWorksTitle": "어떻게 동작하나요",
+    "step1Title": "매일 UTC 00:00 새 질문",
+    "step1Body": "하루에 오직 하나의 질문이 UTC 자정에 공개됩니다. 피드도, 스크롤도 없어요. 오늘의 질문 하나뿐.",
+    "step2Title": "10초 안에 답하기",
+    "step2Body": "옵션 중 하나를 고르세요. 하루에 한 번만 답할 수 있고, 답은 익명으로 저장됩니다.",
+    "step3Title": "세계의 답 보기",
+    "step3Body": "답을 보내자마자 전 세계의 결과가 세계지도 위에 펼쳐집니다. 국가별로.",
+    "privacyTitle": "언제나 프라이버시 우선",
+    "privacyBody": "계정 없음. 꼭 필요한 쿠키 하나만. IP는 저장하지 않고, 매일 바뀌는 키로 해싱만 합니다. 광고도, 제3자 추적도 없어요.",
+    "languagesTitle": "당신의 언어로",
+    "languagesBody": "영어, 한국어, 일본어, 스페인어로 제공됩니다. 더 추가하고 있어요.",
+    "cta": "오늘의 질문 답하기",
+    "navLabel": "소개"
+  },
   "question": {
     "noQuestionToday": "오늘의 질문이 아직 준비되지 않았어요. 잠시 후 다시 확인해 주세요.",
-    "translationFallback": "이 언어 번역이 없어 영어로 표시합니다."
+    "translationFallback": "이 언어 번역이 없어 영어로 표시합니다.",
+    "keyboardHint": "팁: 1–{max} 키로 빠르게 선택"
   },
   "cta": {
     "answer": "답하기",

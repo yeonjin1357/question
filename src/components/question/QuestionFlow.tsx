@@ -3,11 +3,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { ResultsView } from "@/components/results/ResultsView";
 import { Badge } from "@/components/ui/Badge";
 import type { AggregateResult } from "@/lib/db/queries/results";
+import { optionEmoji } from "@/lib/ui/option-emoji";
 import { cn } from "@/lib/utils/cn";
 
 type Option = { id: string; sortOrder: number; text: string };
@@ -122,7 +123,11 @@ export function QuestionFlow({
   const disabled = state.kind === "submitting";
 
   return (
-    <div className="flex w-full flex-col gap-4">
+    <KeyboardAwareFlow
+      disabled={disabled || state.kind !== "idle" && state.kind !== "error"}
+      options={options}
+      onSelect={submit}
+    >
       <ul className="flex w-full flex-col gap-3">
         {options.map((o, idx) => {
           const isBusy = state.kind === "submitting" && state.optionId === o.id;
@@ -147,6 +152,14 @@ export function QuestionFlow({
                 <Badge tone={isBusy ? "brand" : "neutral"} className={isBusy ? "!bg-white !text-brand-600" : ""}>
                   {LETTERS[idx] ?? String(idx + 1)}
                 </Badge>
+                {(() => {
+                  const emoji = optionEmoji(o.id);
+                  return emoji ? (
+                    <span aria-hidden className="text-xl leading-none">
+                      {emoji}
+                    </span>
+                  ) : null;
+                })()}
                 <span className="flex-1 font-medium">{o.text}</span>
                 {isBusy ? (
                   <span
@@ -179,6 +192,47 @@ export function QuestionFlow({
           </motion.p>
         ) : null}
       </AnimatePresence>
-    </div>
+
+      <p className="hidden text-center text-[11px] text-neutral-400 dark:text-neutral-500 sm:block">
+        {t("question.keyboardHint", { max: Math.min(options.length, 5) })}
+      </p>
+    </KeyboardAwareFlow>
   );
+}
+
+/**
+ * 1..5 숫자키로 옵션 선택. input/textarea 포커스 중엔 동작 안 함.
+ * Cmd/Ctrl 조합은 브라우저 기본 단축키와 충돌하므로 제외.
+ */
+function KeyboardAwareFlow({
+  disabled,
+  options,
+  onSelect,
+  children,
+}: {
+  disabled: boolean;
+  options: Option[];
+  onSelect: (optionId: string) => void;
+  children: React.ReactNode;
+}) {
+  useEffect(() => {
+    if (disabled) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || target?.isContentEditable) return;
+      const n = Number(e.key);
+      if (!Number.isInteger(n) || n < 1 || n > Math.min(options.length, 5)) return;
+      const opt = options[n - 1];
+      if (opt) {
+        e.preventDefault();
+        onSelect(opt.id);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [disabled, options, onSelect]);
+
+  return <div className="flex w-full flex-col gap-4">{children}</div>;
 }

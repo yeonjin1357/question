@@ -6,9 +6,27 @@
   "home": {
     "todaysQuestion": "今日の質問"
   },
+  "about": {
+    "title": "一日一問",
+    "subtitle": "一つの質問、一日、世界が答える。",
+    "howItWorksTitle": "使い方",
+    "step1Title": "毎日 UTC 00:00 に新しい質問",
+    "step1Body": "一日に一つだけ、UTC の真夜中に新しい質問が公開されます。フィードもスクロールもなく、今日の一問だけ。",
+    "step2Title": "10秒で回答",
+    "step2Body": "選択肢から一つ選ぶだけ。回答は一日一回、匿名で記録されます。",
+    "step3Title": "世界の答えを見る",
+    "step3Body": "回答した瞬間、世界地図の上に国別の結果が表示されます。",
+    "privacyTitle": "プライバシーを最優先",
+    "privacyBody": "アカウントなし。必要最低限のクッキーが一つだけ。IP は保存されず、毎日切り替わるキーでハッシュ化されます。広告も第三者追跡もありません。",
+    "languagesTitle": "あなたの言語で",
+    "languagesBody": "英語・韓国語・日本語・スペイン語で利用できます。今後も追加予定。",
+    "cta": "今日の質問に答える",
+    "navLabel": "概要"
+  },
   "question": {
     "noQuestionToday": "今日の質問はまだ準備できていません。後ほどご確認ください。",
-    "translationFallback": "お使いの言語の翻訳がありません。英語で表示します。"
+    "translationFallback": "お使いの言語の翻訳がありません。英語で表示します。",
+    "keyboardHint": "ヒント: 1–{max} キーで素早く選択"
   },
   "cta": {
     "answer": "答える",

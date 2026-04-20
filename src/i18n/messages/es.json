@@ -6,9 +6,27 @@
   "home": {
     "todaysQuestion": "La pregunta de hoy"
   },
+  "about": {
+    "title": "Una pregunta al día",
+    "subtitle": "Una pregunta. Un día. El mundo responde.",
+    "howItWorksTitle": "Cómo funciona",
+    "step1Title": "Nueva pregunta cada UTC 00:00",
+    "step1Body": "Una sola pregunta se publica cada día a la medianoche UTC. Sin feed, sin scroll infinito — solo la de hoy.",
+    "step2Title": "Responde en 10 segundos",
+    "step2Body": "Elige una de las opciones. Solo puedes responder una vez al día, y tu elección es anónima.",
+    "step3Title": "Mira la respuesta del mundo",
+    "step3Body": "Justo después de responder, los resultados aparecen en un mapa mundial — país por país.",
+    "privacyTitle": "Privacidad primero, siempre",
+    "privacyBody": "Sin cuentas. Solo una cookie estrictamente necesaria. Tu IP nunca se guarda: solo un hash con una clave que rota cada día. Sin anuncios ni seguimiento de terceros.",
+    "languagesTitle": "Habla tu idioma",
+    "languagesBody": "Disponible en inglés, coreano, japonés y español. Estamos añadiendo más.",
+    "cta": "Responder la pregunta de hoy",
+    "navLabel": "Acerca de"
+  },
   "question": {
     "noQuestionToday": "Aún no hay pregunta para hoy. Vuelve en un rato.",
-    "translationFallback": "No hay traducción en tu idioma. Mostrando en inglés."
+    "translationFallback": "No hay traducción en tu idioma. Mostrando en inglés.",
+    "keyboardHint": "Tip: pulsa 1–{max} para elegir"
   },
   "cta": {
     "answer": "Responder",
