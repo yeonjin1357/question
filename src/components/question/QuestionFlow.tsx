@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 
@@ -39,6 +40,7 @@ export function QuestionFlow({
   initialResults,
 }: QuestionFlowProps) {
   const t = useTranslations();
+  const router = useRouter();
   const [state, setState] = useState<State>(
     initialMyResponse
       ? {
@@ -69,6 +71,9 @@ export function QuestionFlow({
             results: body.data.results,
             justAnswered: true,
           });
+          // Router Cache(30s 기본) 에 응답 전 RSC 가 남아 있으면, 다른 페이지 갔다가 돌아올 때
+          // initialMyResponse=null 로 되돌아가 질문 화면이 다시 보이는 현상 발생. 새 RSC 로 갱신.
+          router.refresh();
           return;
         }
         if (res.status === 409) {
@@ -79,6 +84,7 @@ export function QuestionFlow({
           const r = await fetch(`/api/results/${questionId}`);
           const results = r.ok ? ((await r.json()) as { data: AggregateResult }).data : null;
           setState({ kind: "answered", myOptionId: prev, results, justAnswered: false });
+          router.refresh();
           return;
         }
         if (res.status === 429) {
@@ -90,7 +96,7 @@ export function QuestionFlow({
         setState({ kind: "error", message: t("error.generic") });
       }
     },
-    [questionId, t],
+    [questionId, router, t],
   );
 
   if (state.kind === "answered") {

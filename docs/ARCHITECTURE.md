@@ -172,13 +172,16 @@ function computeSessionHash(ip: string, ua: string): string {
 
 ## 6. 국가 식별
 
-### 6.1 Cloudflare 헤더
+### 6.1 헤더 우선순위
 ```ts
 // 프로덕션
-const country = request.headers.get("cf-ipcountry"); // 'KR', 'US', 'XX'(unknown)
+// 1) Cloudflare 앞단 (있을 때)
+const cf = request.headers.get("cf-ipcountry");
+// 2) Vercel 플랫폼 헤더 (CF 없거나 비활성 시 fallback)
+const vercel = request.headers.get("x-vercel-ip-country");
 
 // 로컬 개발
-const country = process.env.DEV_COUNTRY_OVERRIDE ?? "XX";
+const country = process.env.DEV_COUNTRY_OVERRIDE ?? null;
 ```
 
 ### 6.2 특수 값 처리

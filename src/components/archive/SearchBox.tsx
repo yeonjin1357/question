@@ -56,7 +56,7 @@ export function SearchBox({ placeholder, clearLabel }: SearchBoxProps) {
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
         maxLength={100}
-        className="w-full rounded-full border-2 border-neutral-200 bg-white px-10 py-2.5 text-sm transition-colors placeholder:text-neutral-400 focus:border-brand-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-brand-500"
+        className="w-full appearance-none rounded-full border-2 border-neutral-200 bg-white px-10 py-2.5 text-sm transition-colors placeholder:text-neutral-400 focus:border-brand-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:border-brand-500 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-ms-clear]:hidden"
       />
       {value ? (
         <button

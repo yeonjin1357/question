@@ -37,6 +37,21 @@ describe("getCountryFromRequest (header path)", () => {
     expect(getCountryFromRequest(req)).toBe("JP");
   });
 
+  it("falls back to x-vercel-ip-country when cf-ipcountry is absent", () => {
+    const req = makeRequest({ "x-vercel-ip-country": "KR" });
+    expect(getCountryFromRequest(req)).toBe("KR");
+  });
+
+  it("prefers cf-ipcountry over x-vercel-ip-country", () => {
+    const req = makeRequest({ "cf-ipcountry": "US", "x-vercel-ip-country": "KR" });
+    expect(getCountryFromRequest(req)).toBe("US");
+  });
+
+  it("falls through to x-vercel-ip-country when cf-ipcountry is an invalid bucket", () => {
+    const req = makeRequest({ "cf-ipcountry": "XX", "x-vercel-ip-country": "KR" });
+    expect(getCountryFromRequest(req)).toBe("KR");
+  });
+
   it("returns null for missing header", () => {
     const req = makeRequest();
     expect(getCountryFromRequest(req)).toBeNull();

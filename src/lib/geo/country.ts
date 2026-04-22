@@ -29,8 +29,7 @@ export function normalizeCountryCode(raw: string | null | undefined): string | n
  * 우선순위:
  *   1. 로컬 개발 환경(NODE_ENV !== 'production')에서 DEV_COUNTRY_OVERRIDE 가 있으면 그 값
  *   2. Cloudflare 의 `cf-ipcountry` 헤더
- *
- * 프로덕션에선 반드시 Cloudflare 뒤에 배포돼 있어야 합니다.
+ *   3. Vercel 의 `x-vercel-ip-country` 헤더 (CF 앞단이 없거나 비활성화된 경우)
  *
  * @returns 유효한 2 글자 국가 코드 또는 null (미식별 / 특수값)
  * @see docs/ARCHITECTURE.md §6, ADR-008
@@ -39,5 +38,7 @@ export function getCountryFromRequest(req: NextRequest): string | null {
   if (env.NODE_ENV !== "production" && env.DEV_COUNTRY_OVERRIDE) {
     return normalizeCountryCode(env.DEV_COUNTRY_OVERRIDE);
   }
-  return normalizeCountryCode(req.headers.get("cf-ipcountry"));
+  const cf = normalizeCountryCode(req.headers.get("cf-ipcountry"));
+  if (cf) return cf;
+  return normalizeCountryCode(req.headers.get("x-vercel-ip-country"));
 }

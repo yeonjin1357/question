@@ -81,7 +81,9 @@
 Zod 검증 실패 시 400.
 
 ### 헤더
-- `cf-ipcountry`: Cloudflare에서 자동 주입 (로컬 개발 제외)
+- `cf-ipcountry`: Cloudflare 앞단이 있을 때 자동 주입
+- `x-vercel-ip-country`: Cloudflare 없을 때의 fallback (Vercel 기본 제공)
+- 로컬 개발: `DEV_COUNTRY_OVERRIDE` 환경변수로 시뮬레이션
 
 ### 201 응답
 ```json
